@@ -141,6 +141,11 @@ public class CollabEditResourceTest {
         when(resource.client.execute(any(HttpPost.class), any(HttpContext.class))).thenReturn(response);
     }
 
+
+    // resync on net.sf.json.JSONException: Invalid JSON String
+//----Sleeping...	at net.sf.json.JSONSerializer.toJSON(JSONSerializer.java:143)
+//	at net.sf.json.JSONSerializer.toJSON(JSONSerializer.java:103)
+
     // TODO: full sync
     //  document.startGuardedBlockChecking(); ?
 }

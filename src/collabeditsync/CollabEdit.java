@@ -2,10 +2,7 @@ package collabeditsync;
 
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.impl.event.DocumentEventImpl;
-import net.sf.json.JSON;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
+import net.sf.json.*;
 
 import java.io.IOException;
 
@@ -62,6 +59,25 @@ public class CollabEdit {
         try {
             resource.sendUpdate(event.getOffset(), event.getOldFragment(), event.getNewFragment(), event.getDocument().getCharsSequence());
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void update(String oldText, String newText) {
+        if (oldText.equals(newText)) return;
+        try {
+            resource.sendUpdate(oldText, newText);
+        } catch (JSONException e) {
+            System.out.println("full sync needed");
+            try {
+                JSONObject response = resource.waitForUpdate(true);
+                oldText = response.getString("full_text");
+                resource.sendUpdate(oldText, newText);
+            } catch (IOException e1) {
+                System.err.println("exception...");
+                e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

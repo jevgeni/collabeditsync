@@ -15,9 +15,7 @@ import javax.print.Doc;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class CollabEditTest {
 
@@ -107,6 +105,18 @@ public class CollabEditTest {
 
         collabEdit.handle(event);
         verify(collabEdit.resource).sendUpdate(5, "67", "xx", "12345xx89");
+    }
+
+    @Test
+    public void sendUpdatesOnlyForDifferences() throws Exception {
+        collabEdit.update("x", "x");
+        verifyZeroInteractions(collabEdit.resource);
+    }
+
+    @Test
+    public void sendFullUpdates() throws Exception {
+        collabEdit.update("old-text", "new-text");
+        verify(collabEdit).update("old-text", "new-text");
     }
 
     // TODO: remove if document is empty?

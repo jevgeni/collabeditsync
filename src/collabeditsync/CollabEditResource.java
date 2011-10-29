@@ -196,6 +196,26 @@ public class CollabEditResource {
         return (JSONObject) JSONSerializer.toJSON(rest);
     }
 
+    public void sendUpdate(String oldText, String newText) throws IOException {
+        List<JSONArray> ops = new ArrayList<JSONArray>();
+        ops.add(deleteElement(oldText));
+        ops.add(insertElement(newText));
+
+        JSONObject object = new JSONObject()
+                .element("cuid", cuid)
+                .element("parent_hash", DigestUtils.md5Hex(oldText))
+                .element("result_hash", DigestUtils.md5Hex(newText))
+                .element("ops", ops);
+
+        System.out.println("Sending out: " + object);
+
+        String rest = postTo(client, "http://collabedit.com/ot/post", withParams("op", object.toString()));
+
+        JSONObject json = (JSONObject) JSONSerializer.toJSON(rest);
+        System.out.println("Response on update: " + json);
+    }
+
+    @Deprecated
     public void sendUpdate(int myOffset, CharSequence beforeText, CharSequence afterText, CharSequence newFullText) throws IOException {
         List<JSONArray> ops = new ArrayList<JSONArray>();
 
@@ -235,14 +255,14 @@ public class CollabEditResource {
     private JSONArray insertElement(CharSequence text) {
         JSONArray insert = new JSONArray();
         insert.add(8); // insert code
-        insert.add(text);
+        insert.add(text.toString());
         return insert;
     }
 
     private JSONArray deleteElement(CharSequence text) {
         JSONArray delete = new JSONArray();
         delete.add(9); // delete code
-        delete.add(text);
+        delete.add(text.toString());
         return delete;
     }
 
