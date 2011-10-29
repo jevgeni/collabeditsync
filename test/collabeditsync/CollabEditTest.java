@@ -94,4 +94,13 @@ public class CollabEditTest {
         verify(document).deleteString(3, 9);
         verify(document).insertString(3, "test");
     }
+
+// TODO: remove if document is empty?
+//
+//   Received: {"op":{"ops":[[9,"p"]],"cuid":745865,"parent_hash":"83878c91171338902e0fe0fb97a8c47a","result_hash":"d41d8cd98f00b204e9800998ecf8427e"}}
+//[ 906781]  ERROR - pplication.impl.LaterInvocator - Wrong endOffset: 1; documentLength: 0
+//java.lang.IndexOutOfBoundsException: Wrong endOffset: 1; documentLength: 0
+//	at com.intellij.openapi.editor.impl.DocumentImpl.b(DocumentImpl.java:410)
+//	at com.intellij.openapi.editor.impl.DocumentImpl.deleteString(DocumentImpl.java:345)
+
 }

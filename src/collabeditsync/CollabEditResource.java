@@ -36,11 +36,10 @@ import java.util.regex.Pattern;
 import static java.util.Arrays.asList;
 
 public class CollabEditResource {
-    private final HttpClient client;
-    private final HttpContext context = new BasicHttpContext();
-
+    HttpClient client;
+    HttpContext context = new BasicHttpContext();
+    Integer cuid;
     private final String code;
-    private Integer cuid;
 
     public CollabEditResource(String code) {
         SchemeRegistry schemeRegistry = new SchemeRegistry();
@@ -131,7 +130,7 @@ public class CollabEditResource {
 ////               {"cuid":743033,"parent_hash":"1cb251ec0d568de6a929b520c4aed8d1","result_hash":"104f0d473d70279b5b252246b8e71e84","ops":[[9,"text"],[8,"\ntext\n"]]}
 ////
 ////
-//sendUpdate(client, context, cuid, beforeText, "\ntext\n");
+//sendPartialModificationCommand(client, context, cuid, beforeText, "\ntext\n");
 //
 ////text
 ////
@@ -172,7 +171,7 @@ public class CollabEditResource {
 //                String afterText = IOUtils.toString(fileChangeEvent.getFile().waitForUpdate().getInputStream());
 //                System.out.println(afterText);
 //
-//                sendUpdate(client, context, finalCuid, beforeText, afterText);
+//                sendPartialModificationCommand(client, context, finalCuid, beforeText, afterText);
 //            }
 //        });
 //        fm.setRecursive(true);
@@ -197,27 +196,22 @@ public class CollabEditResource {
         return (JSONObject) JSONSerializer.toJSON(rest);
     }
 
-    public void sendUpdate(String beforeText, String afterText) throws Exception {
-        if (cuid == null) throw new IllegalStateException("Cannot query as I don't have CUID yet!");
+    public void sendUpdate(int myOffset, String beforeText, String afterText, String newFullText) throws Exception {
+        List<JSONArray> ops = new ArrayList<JSONArray>();
 
-        JSONArray before = new JSONArray();
-        final int DELETE_CODE = 9;
-        before.add(DELETE_CODE);
-        before.add(beforeText);
+        if (myOffset > 0) ops.add(indexElement(myOffset));
+        if (!beforeText.isEmpty()) ops.add(deleteElement(beforeText));
+        if (!afterText.isEmpty()) ops.add(insertElement(afterText));
 
-        JSONArray after = new JSONArray();
-        final int INSERT_CODE = 8;
-        after.add(INSERT_CODE);
-        after.add(afterText);
+        String oldFullText = getOldText(myOffset, beforeText, afterText, newFullText);
 
-        JSONArray ops = new JSONArray();
-        ops.addAll(asList(before, after));
-
+        int indexFromRight = oldFullText.length() - myOffset;
+        if (indexFromRight > 0) ops.add(indexElement(indexFromRight));
 
         JSONObject object = new JSONObject()
                 .element("cuid", cuid)
-                .element("parent_hash", DigestUtils.md5Hex(beforeText))
-                .element("result_hash", DigestUtils.md5Hex(afterText))
+                .element("parent_hash", DigestUtils.md5Hex(oldFullText.toString()))
+                .element("result_hash", DigestUtils.md5Hex(newFullText))
                 .element("ops", ops);
 
         System.out.println("Sending out: " + object);
@@ -226,5 +220,36 @@ public class CollabEditResource {
 
         JSONObject json = (JSONObject) JSONSerializer.toJSON(rest);
         System.out.println("Response on update: " + json);
+    }
+
+    private String getOldText(int myOffset, String beforeText, String afterText, String newFullText) {
+        CharSequence firstPart = newFullText.subSequence(0, myOffset);
+        CharSequence secondPart = newFullText.subSequence(myOffset + afterText.length(), newFullText.length());
+
+        StringBuilder oldFullText = new StringBuilder(firstPart);
+        oldFullText.append(beforeText);
+        oldFullText.append(secondPart);
+        return oldFullText.toString();
+    }
+
+    private JSONArray insertElement(String text) {
+        JSONArray insert = new JSONArray();
+        insert.add(8); // insert code
+        insert.add(text);
+        return insert;
+    }
+
+    private JSONArray deleteElement(String text) {
+        JSONArray delete = new JSONArray();
+        delete.add(9); // delete code
+        delete.add(text);
+        return delete;
+    }
+
+    private JSONArray indexElement(int pos) {
+        JSONArray index = new JSONArray();
+        index.add(7); // index code
+        index.add(pos);
+        return index;
     }
 }

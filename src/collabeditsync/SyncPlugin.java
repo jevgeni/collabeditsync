@@ -66,7 +66,7 @@ public class SyncPlugin implements SyncPluginInterface {
 
 //                try {
 //                    JSONObject json = collabEdit.waitForUpdate(true);
-//                    collabEdit.sendUpdate(json.getString("full_text"), documentEvent.getDocument().getText());
+//                    collabEdit.sendPartialModificationCommand(json.getString("full_text"), documentEvent.getDocument().getText());
 //                } catch (Exception e) {
 //                    e.printStackTrace();
 //                }
