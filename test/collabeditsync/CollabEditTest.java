@@ -1,51 +1,76 @@
 package collabeditsync;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.intellij.openapi.editor.Document;
+import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class CollabEditTest {
 
-    private CollabEdit collab = new CollabEdit("m37ga");
+    private CollabEdit collabEdit = new CollabEdit();
+
+    @Before
+    public void setUp() throws Exception {
+        collabEdit.resource = mock(CollabEditResource.class);
+    }
 
     @Test
-    public void extractGuid() throws Exception {
-       String responsePart = "<script>\n" +
-               "var sidebar_visible = true;\n" +
-               "var cuid = 744546;\n" +
-               "var guid = \"m37ga\";\n" +
-               "var isNoQuestionYet = false;\n" +
-               "var nickname = \"unknown\";\n" +
-               "var docName = \"dd\";\n" +
-               "</script>\n" +
-               "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js\"></script>\n" +
-               "<script src=\"/static/js/editarea_0_8_2/edit_area/edit_area_loader.js?v=8611b\"></script>\n" +
-               "<script src=\"/static/js/editarea_0_8_2/edit_area/all_scripts.js?v=832c2\"></script>\n" +
-               "<script src=\"/static/js/combined_doc.js?v=488d8\"></script>\n" +
-               "\n" +
-               "</body>\n" +
-               "</html>";
+    public void modificationContainsBothInsertAndDeleteCommandsWithOffsets() throws Exception {
+        String data = "{\"ops\":[[7,1],[9,\"zxxxx\"],[8,\"b\"],[7,20]],\"cuid\":745713,\"parent_hash\":\"b6c963fa53e083f41389c8478b88057c\",\"result_hash\":\"e001a5db8a6f1f16b5c457779c2156a0\"}";
+        JSONObject jsonData = (JSONObject) JSONSerializer.toJSON(data);
+        when(collabEdit.resource.waitForUpdate(false)).thenReturn(jsonData);
 
-        Integer cuid = collab.extractCuid(responsePart);
-        assertEquals(new Integer(744546), cuid);
+        Command command = collabEdit.waitForModificationCommand();
+        assertEquals(1, command.delete.startOffset);
+        assertEquals(6, command.delete.endOffset);
+        assertEquals(1, command.insert.offset);
+        assertEquals("b", command.insert.text);
     }
-    
-    //{"lang":"none","messages":[{"message_text":"renamed document to dd","nickname":"Jevgeni","type":5}],"name":"dd","user_list":["bob"]}
 
-   // op={"ops":[[7,1],[9,"zxxxx"],[8,"b"],[7,20]],"cuid":745713,"parent_hash":"b6c963fa53e083f41389c8478b88057c","result_hash":"e001a5db8a6f1f16b5c457779c2156a0"}
-//
-//    @Test
-//    public void insertCommant() throws Exception {
-//
-//        Command command = collab.waitForModificationCommand();
-//        command.delete.start;
-//        command.delete.end;
-//        command.insert.start;
-//        command.insert.start;
-//        Document document = null;
-//
-//    }
+    @Test
+    public void modificationContainsOnlyInsertWithOffsets() throws Exception {
+        String data = "{\"ops\":[[7,1],[8,\"b\"],[7,20]],\"cuid\":745713,\"parent_hash\":\"b6c963fa53e083f41389c8478b88057c\",\"result_hash\":\"e001a5db8a6f1f16b5c457779c2156a0\"}";
+        JSONObject jsonData = (JSONObject) JSONSerializer.toJSON(data);
+        when(collabEdit.resource.waitForUpdate(false)).thenReturn(jsonData);
 
-    //  document.startGuardedBlockChecking(); ?
+        Command command = collabEdit.waitForModificationCommand();
+        assertNull(command.delete);
+        assertEquals(1, command.insert.offset);
+        assertEquals("b", command.insert.text);
+    }
+
+
+    @Test
+    public void modificationContainsOnlyDeleteWithOffsets() throws Exception {
+        String data = "{\"ops\":[[7,1],[9,\"zxxxx\"],[7,20]],\"cuid\":745713,\"parent_hash\":\"b6c963fa53e083f41389c8478b88057c\",\"result_hash\":\"e001a5db8a6f1f16b5c457779c2156a0\"}";
+        JSONObject jsonData = (JSONObject) JSONSerializer.toJSON(data);
+        when(collabEdit.resource.waitForUpdate(false)).thenReturn(jsonData);
+
+        Command command = collabEdit.waitForModificationCommand();
+        assertEquals(1, command.delete.startOffset);
+        assertEquals(6, command.delete.endOffset);
+        assertNull(command.insert);
+    }
+
+    @Test
+    public void modificationContainsOnlyDeleteWithEndOffset() throws Exception {
+        String data = "{\"ops\":[[9,\"zxxxx\"],[7,20]],\"cuid\":745713,\"parent_hash\":\"b6c963fa53e083f41389c8478b88057c\",\"result_hash\":\"e001a5db8a6f1f16b5c457779c2156a0\"}";
+        JSONObject jsonData = (JSONObject) JSONSerializer.toJSON(data);
+        when(collabEdit.resource.waitForUpdate(false)).thenReturn(jsonData);
+
+        Command command = collabEdit.waitForModificationCommand();
+        assertEquals(0, command.delete.startOffset);
+        assertEquals(5, command.delete.endOffset);
+    }
+
+
+
 }

@@ -5,7 +5,6 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
-import com.intellij.openapi.graph.option.Editor;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -13,7 +12,7 @@ import java.io.IOException;
 
 public class SyncPlugin implements SyncPluginInterface {
 
-    private final CollabEdit collabEdit = new CollabEdit("m37ga");
+    private final CollabEditResource collabEdit = new CollabEditResource("m37ga");
 
     public String getComponentName() {
         return PLUGIN_NAME;
