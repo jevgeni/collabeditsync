@@ -8,10 +8,15 @@ import net.sf.json.JSONSerializer;
 import java.io.IOException;
 
 public class CollabEdit {
-    CollabEditResource resource;
+    CollabEditResource resource = new CollabEditResource("m37ga");
 
     public void init() {
-
+        try {
+            resource.login();
+            resource.changeNick("jevgeni");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Command waitForModificationCommand() {
@@ -20,9 +25,10 @@ public class CollabEdit {
             do {
                 response = resource.waitForUpdate(false);
                 System.out.println("Received: " + response);
-            } while (!response.has("ops"));
+            } while (!response.has("op"));
 
-            JSONArray ops = response.getJSONArray("ops");
+            JSONObject op = response.getJSONObject("op");
+            JSONArray ops = op.getJSONArray("ops");
 
             String deleteText = null;
             String addText = null;

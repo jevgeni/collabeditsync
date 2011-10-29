@@ -3,7 +3,7 @@
 
     <name>CollabEdit Sync</name>
     <description>Syncs with CollabEdit</description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <vendor email="jevgeni.holodkov@gmail.com">Jevgeni Holodkov</vendor>
     <idea-version since-build="6708"/>
     <change-notes>

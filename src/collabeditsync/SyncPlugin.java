@@ -5,14 +5,10 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
-import java.io.IOException;
 
 public class SyncPlugin implements SyncPluginInterface {
 
-    private final CollabEditResource collabEdit = new CollabEditResource("m37ga");
+    private final CollabEdit edit = new CollabEdit();
 
     public String getComponentName() {
         return PLUGIN_NAME;
@@ -20,72 +16,28 @@ public class SyncPlugin implements SyncPluginInterface {
 
     public void initComponent() {
         System.out.println("init!");
-
-        try {
-            collabEdit.login();
-            collabEdit.changeNick("jevgeni");
-
-
-        } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        edit.init(); // TODO: make it implicit
 
         final Document[] test = new Document[1];
         new Thread(new Runnable() {
 
             public void run() {
-                while(!Thread.currentThread().isInterrupted()) {
+                while(true) {
                     if(test[0] != null) {
+                        final Command command = edit.waitForModificationCommand();
 
-                        try {
-                            System.out.println("Waiting for update!");
-                            JSONObject json = collabEdit.waitForUpdate(false);
-//                            collabEdit.getDataToInsert();
-                            JSONObject op = json.getJSONObject("op");
-                            System.out.println(json);
-                            JSONArray ops = op.getJSONArray("ops");
-
-                            JSONArray delete = null;
-                            JSONArray add = null;
-                            JSONArray indexFromStart = null;
-                            JSONArray indexFromEnd = null;
-
-                            System.out.println("Detecting... ");
-                            for (int i = 0; i < ops.size(); i++) {
-                                JSONArray element = ops.getJSONArray(i);
-                                if (element.getInt(0) == 9) {
-                                    System.out.print("delete found ...");
-                                    delete = element;
-                                } else if (element.getInt(0) == 8) {
-                                    System.out.print("insert found ...");
-                                    delete = element;
-                                } else if (element.getInt(0) == 7) {
-                                    if (indexFromStart == null) {
-                                        System.out.println("index from start found...");
-                                        indexFromStart = element;
-                                    } else {
-                                        System.out.println("index from end found...");
-                                        indexFromEnd = element;
-                                    }
-                                }
-                            }
-
-                            ApplicationManager.getApplication().invokeLater(new Runnable() {
+                        ApplicationManager.getApplication().invokeLater(new Runnable() {
                                 public void run() {
 
                                     ApplicationManager.getApplication().runWriteAction(new Runnable() {
                                         public void run() {
-                                            test[0].insertString(1, "x");
+                                            command.apply(test[0]);
                                         }
                                     });
 
                                 }
                             });
 
-                            System.out.println(json);
-                        } catch (IOException e) {
-                            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                        }
                     } else {
                         try {
                             Thread.sleep(1000);

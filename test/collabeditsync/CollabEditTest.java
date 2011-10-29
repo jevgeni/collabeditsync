@@ -26,7 +26,7 @@ public class CollabEditTest {
 
     @Test
     public void modificationContainsBothInsertAndDeleteCommandsWithOffsets() throws Exception {
-        String data = "{\"ops\":[[7,1],[9,\"zxxxx\"],[8,\"b\"],[7,20]],\"cuid\":745713,\"parent_hash\":\"b6c963fa53e083f41389c8478b88057c\",\"result_hash\":\"e001a5db8a6f1f16b5c457779c2156a0\"}";
+        String data = "{\"op\":{\"ops\":[[7,1],[9,\"zxxxx\"],[8,\"b\"],[7,20]],\"cuid\":745713,\"parent_hash\":\"b6c963fa53e083f41389c8478b88057c\",\"result_hash\":\"e001a5db8a6f1f16b5c457779c2156a0\"}}";
         JSONObject jsonData = (JSONObject) JSONSerializer.toJSON(data);
         when(collabEdit.resource.waitForUpdate(false)).thenReturn(jsonData);
 
@@ -39,7 +39,7 @@ public class CollabEditTest {
 
     @Test
     public void modificationContainsOnlyInsertWithOffsets() throws Exception {
-        String data = "{\"ops\":[[7,1],[8,\"b\"],[7,20]],\"cuid\":745713,\"parent_hash\":\"b6c963fa53e083f41389c8478b88057c\",\"result_hash\":\"e001a5db8a6f1f16b5c457779c2156a0\"}";
+        String data = "{\"op\":{\"ops\":[[7,1],[8,\"b\"],[7,20]],\"cuid\":745713,\"parent_hash\":\"b6c963fa53e083f41389c8478b88057c\",\"result_hash\":\"e001a5db8a6f1f16b5c457779c2156a0\"}}";
         JSONObject jsonData = (JSONObject) JSONSerializer.toJSON(data);
         when(collabEdit.resource.waitForUpdate(false)).thenReturn(jsonData);
 
@@ -52,7 +52,7 @@ public class CollabEditTest {
 
     @Test
     public void modificationContainsOnlyDeleteWithOffsets() throws Exception {
-        String data = "{\"ops\":[[7,1],[9,\"zxxxx\"],[7,20]],\"cuid\":745713,\"parent_hash\":\"b6c963fa53e083f41389c8478b88057c\",\"result_hash\":\"e001a5db8a6f1f16b5c457779c2156a0\"}";
+        String data = "{\"op\":{\"ops\":[[7,1],[9,\"zxxxx\"],[7,20]],\"cuid\":745713,\"parent_hash\":\"b6c963fa53e083f41389c8478b88057c\",\"result_hash\":\"e001a5db8a6f1f16b5c457779c2156a0\"}}";
         JSONObject jsonData = (JSONObject) JSONSerializer.toJSON(data);
         when(collabEdit.resource.waitForUpdate(false)).thenReturn(jsonData);
 
@@ -64,7 +64,7 @@ public class CollabEditTest {
 
     @Test
     public void modificationContainsOnlyDeleteWithEndOffset() throws Exception {
-        String data = "{\"ops\":[[9,\"zxxxx\"],[7,20]],\"cuid\":745713,\"parent_hash\":\"b6c963fa53e083f41389c8478b88057c\",\"result_hash\":\"e001a5db8a6f1f16b5c457779c2156a0\"}";
+        String data = "{\"op\":{\"ops\":[[9,\"zxxxx\"],[7,20]],\"cuid\":745713,\"parent_hash\":\"b6c963fa53e083f41389c8478b88057c\",\"result_hash\":\"e001a5db8a6f1f16b5c457779c2156a0\"}}";
         JSONObject jsonData = (JSONObject) JSONSerializer.toJSON(data);
         when(collabEdit.resource.waitForUpdate(false)).thenReturn(jsonData);
 
@@ -76,7 +76,7 @@ public class CollabEditTest {
     @Test
     public void waitForDataUntilOpsReceived() throws Exception {
         String firstData = "{\"lang\":\"none\",\"messages\":[{\"message_text\":\"renamed document to dd\",\"nickname\":\"Jevgeni\",\"type\":5}],\"name\":\"dd\",\"user_list\":[\"bob\"]}";
-        String secondData = "{\"ops\":[[9,\"zxxxx\"],[7,20]],\"cuid\":745713}";
+        String secondData = "{\"op\":{\"ops\":[[9,\"zxxxx\"],[7,20]],\"cuid\":745713}}";
         JSONObject firstJsonData = (JSONObject) JSONSerializer.toJSON(firstData);
         JSONObject secondJsonData = (JSONObject) JSONSerializer.toJSON(secondData);
         when(collabEdit.resource.waitForUpdate(false)).thenReturn(firstJsonData).thenReturn(secondJsonData);
