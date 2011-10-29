@@ -75,9 +75,7 @@ public class CollabEdit {
         } catch (UnsuccessfulResponseException e) {
             System.out.println("full sync needed");
             try {
-                JSONObject response = resource.waitForUpdate(true);
-                oldText = response.getString("full_text");
-                resource.sendUpdate(oldText, newText);
+                resource.sendUpdate(getFullText(), newText);
             } catch (Exception e1) {
                 System.err.println("Cannot recover...");
                 e1.printStackTrace();
@@ -85,5 +83,11 @@ public class CollabEdit {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String getFullText() throws IOException, UnsuccessfulResponseException {
+        String oldText;JSONObject response = resource.waitForUpdate(true);
+        oldText = response.getString("full_text");
+        return oldText;
     }
 }

@@ -7,9 +7,18 @@ import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
 import com.intellij.openapi.util.Computable;
 
+import java.io.IOException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 public class SyncPlugin implements SyncPluginInterface {
 
     private final CollabEdit edit = new CollabEdit();
+
+    private final Lock lock = new ReentrantLock();
+
+    private String oldText = null;
 
     public String getComponentName() {
         return PLUGIN_NAME;
@@ -32,7 +41,21 @@ public class SyncPlugin implements SyncPluginInterface {
 
                                     ApplicationManager.getApplication().runWriteAction(new Runnable() {
                                         public void run() {
-//                                            command.apply(test[0]);
+                                            synchronized (lock) {
+                                                try {
+                                                    command.apply(test[0]);
+                                                    oldText = getDocumentText(test[0]);
+                                                } catch (IndexOutOfBoundsException e) {
+                                                    try {
+                                                        oldText = edit.getFullText();
+                                                        test[0].setText(oldText);
+                                                    } catch (IOException e1) {
+                                                        e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                                                    } catch (UnsuccessfulResponseException e1) {
+                                                        e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                                                    }
+                                                }
+                                            }
                                         }
                                     });
 
@@ -54,19 +77,22 @@ public class SyncPlugin implements SyncPluginInterface {
         new Thread(new Runnable() {
 
             public void run() {
-                String oldText = null;
                 while(true) {
                     if(test[0] != null) {
                         final Document document = test[0];
 
-                        if (oldText == null) {
-                            oldText = getDocumentText(document);
+                        synchronized (lock) {
+                            if (oldText == null) {
+                                oldText = getDocumentText(document);
+                            }
                         }
                         sleep();
 
                         String newText = getDocumentText(document);
-                        edit.update(oldText, newText);
-                        oldText = newText;
+                        synchronized (lock) {
+                            edit.update(oldText, newText);
+                            oldText = newText;
+                        }
 
                     } else {
                         try {
@@ -121,7 +147,7 @@ public class SyncPlugin implements SyncPluginInterface {
     private void sleep() {
         System.out.print("----Sleeping...");
         try {
-            Thread.sleep(2500);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

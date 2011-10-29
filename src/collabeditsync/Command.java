@@ -12,6 +12,14 @@ public class Command {
             this.startOffset = startOffset;
             this.endOffset = startOffset + deleteText.length();
         }
+
+        @Override
+        public String toString() {
+            return "Delete{" +
+                    "startOffset=" + startOffset +
+                    ", endOffset=" + endOffset +
+                    '}';
+        }
     }
 
     public static class Insert {
@@ -21,6 +29,14 @@ public class Command {
         public Insert(int offset, String text) {
             this.offset = offset;
             this.text = text;
+        }
+
+        @Override
+        public String toString() {
+            return "Insert{" +
+                    "offset=" + offset +
+                    ", text='" + text + '\'' +
+                    '}';
         }
     }
 
@@ -34,7 +50,16 @@ public class Command {
 
 
     public void apply(Document document) {
+        System.out.println(this);
         if (delete != null) document.deleteString(delete.startOffset, delete.endOffset);
         if (insert != null) document.insertString(insert.offset, insert.text);
+    }
+
+    @Override
+    public String toString() {
+        return "Command{" +
+                "delete=" + delete +
+                ", insert=" + insert +
+                '}';
     }
 }
