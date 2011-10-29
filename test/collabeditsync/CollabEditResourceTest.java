@@ -142,11 +142,5 @@ public class CollabEditResourceTest {
     }
 
     // TODO: full sync
-
-    //
-    // DocumentEventImpl[myOffset=14, myOldLength=21, myNewLength=1, myOldString='xzIntellijIdeaRulezzz', myNewString='d'] Whole.
-
-
-
     //  document.startGuardedBlockChecking(); ?
 }

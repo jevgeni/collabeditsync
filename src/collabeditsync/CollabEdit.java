@@ -1,5 +1,7 @@
 package collabeditsync;
 
+import com.intellij.openapi.editor.event.DocumentEvent;
+import com.intellij.openapi.editor.impl.event.DocumentEventImpl;
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -53,5 +55,14 @@ public class CollabEdit {
         }
 
         return null;
+    }
+
+
+    public void handle(DocumentEvent event) {
+        try {
+            resource.sendUpdate(event.getOffset(), event.getOldFragment(), event.getNewFragment(), event.getDocument().getCharsSequence());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

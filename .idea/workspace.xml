@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="3c044201-d04b-4941-a6e2-a765bdc851c6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/collabeditsync/CollabEdit.java" afterPath="$PROJECT_DIR$/src/collabeditsync/CollabEdit.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/collabeditsync/CollabEditResource.java" afterPath="$PROJECT_DIR$/src/collabeditsync/CollabEditResource.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/collabeditsync/SyncPlugin.java" afterPath="$PROJECT_DIR$/src/collabeditsync/SyncPlugin.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/collabeditsync/CollabEditResourceTest.java" afterPath="$PROJECT_DIR$/test/collabeditsync/CollabEditResourceTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/collabeditsync/CollabEditTest.java" afterPath="$PROJECT_DIR$/test/collabeditsync/CollabEditTest.java" />
     </list>
@@ -68,7 +68,7 @@
       <file leaf-file-name="CollabEditResource.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/collabeditsync/CollabEditResource.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="202" column="48" selection-start="7598" selection-end="7598" vertical-scroll-proportion="0.0">
+            <state line="198" column="16" selection-start="7331" selection-end="7331" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -76,10 +76,19 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="String.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar:///System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/../Classes/alt-string.jar!/java/lang/String.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="96" column="18" selection-start="3666" selection-end="3666" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="CollabEdit.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/collabeditsync/CollabEdit.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="16" selection-start="907" selection-end="907" vertical-scroll-proportion="0.0">
+            <state line="58" column="0" selection-start="1911" selection-end="1911" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -94,19 +103,30 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CollabEditTest.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="CollabEditTest.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/collabeditsync/CollabEditTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="97" column="37" selection-start="4486" selection-end="4486" vertical-scroll-proportion="0.0">
+            <state line="102" column="34" selection-start="4619" selection-end="4637" vertical-scroll-proportion="0.19263457">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DocumentImpl.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$APPLICATION_HOME_DIR$/lib/idea.jar!/com/intellij/openapi/editor/impl/DocumentImpl.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="30" column="11" selection-start="1730" selection-end="1730" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CollabEditResourceTest.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="CollabEditResourceTest.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/collabeditsync/CollabEditResourceTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="147" column="0" selection-start="5903" selection-end="5903" vertical-scroll-proportion="0.76407504">
+            <state line="84" column="0" selection-start="3230" selection-end="3230" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -117,7 +137,7 @@
       <file leaf-file-name="SyncPlugin.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/collabeditsync/SyncPlugin.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="54" column="13" selection-start="2030" selection-end="2030" vertical-scroll-proportion="0.0">
+            <state line="38" column="31" selection-start="1398" selection-end="1398" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -166,11 +186,11 @@
         <option value="$PROJECT_DIR$/ivy.xml" />
         <option value="$PROJECT_DIR$/src/collabeditsync/Command.java" />
         <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
+        <option value="$PROJECT_DIR$/src/collabeditsync/SyncPlugin.java" />
+        <option value="$PROJECT_DIR$/test/collabeditsync/CollabEditResourceTest.java" />
+        <option value="$PROJECT_DIR$/src/collabeditsync/CollabEditResource.java" />
         <option value="$PROJECT_DIR$/src/collabeditsync/CollabEdit.java" />
         <option value="$PROJECT_DIR$/test/collabeditsync/CollabEditTest.java" />
-        <option value="$PROJECT_DIR$/src/collabeditsync/SyncPlugin.java" />
-        <option value="$PROJECT_DIR$/src/collabeditsync/CollabEditResource.java" />
-        <option value="$PROJECT_DIR$/test/collabeditsync/CollabEditResourceTest.java" />
       </list>
     </option>
   </component>
@@ -414,63 +434,7 @@
       <recent name="jevgeni.github" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.CollabEditResourceTest">
-    <configuration default="false" name="CollabEditResourceTest.sendDeleteOnly" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="coverage" enabled="false" merge="false">
-        <pattern>
-          <option name="PATTERN" value="collabeditsync.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <module name="collabeditsync" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="collabeditsync" />
-      <option name="MAIN_CLASS_NAME" value="collabeditsync.CollabEditResourceTest" />
-      <option name="METHOD_NAME" value="sendDeleteOnly" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="CollabEditResourceTest.doNotSendLeftOffsetIfZero" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="coverage" enabled="false" merge="false">
-        <pattern>
-          <option name="PATTERN" value="collabeditsync.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <module name="collabeditsync" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="collabeditsync" />
-      <option name="MAIN_CLASS_NAME" value="collabeditsync.CollabEditResourceTest" />
-      <option name="METHOD_NAME" value="doNotSendLeftOffsetIfZero" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="JUnit.CollabEditTest">
     <configuration default="false" name="CollabEditResourceTest" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false">
         <pattern>
@@ -545,6 +509,62 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="collabeditsync" />
       <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="CollabEditTest.sendUpdatesOnEvent" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false">
+        <pattern>
+          <option name="PATTERN" value="collabeditsync.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="collabeditsync" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="collabeditsync" />
+      <option name="MAIN_CLASS_NAME" value="collabeditsync.CollabEditTest" />
+      <option name="METHOD_NAME" value="sendUpdatesOnEvent" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="CollabEditTest" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false">
+        <pattern>
+          <option name="PATTERN" value="collabeditsync.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="collabeditsync" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="collabeditsync" />
+      <option name="MAIN_CLASS_NAME" value="collabeditsync.CollabEditTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
@@ -766,11 +786,11 @@
     </configuration>
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Plugin.Plugin" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.CollabEditResourceTest.sendDeleteOnly" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.CollabEditResourceTest.doNotSendLeftOffsetIfZero" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.CollabEditResourceTest" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.CollabEditResourceTest.doNotSendRightOffsetIfZero" />
-      <item index="5" class="java.lang.String" itemvalue="Application.CollabEditResource" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.CollabEditResourceTest" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.CollabEditResourceTest.doNotSendRightOffsetIfZero" />
+      <item index="3" class="java.lang.String" itemvalue="Application.CollabEditResource" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.CollabEditTest.sendUpdatesOnEvent" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.CollabEditTest" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -858,7 +878,7 @@
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="reading works now!" />
+    <option name="LAST_COMMIT_MESSAGE" value="added tests to partial updates&#10;" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -874,6 +894,7 @@
     <MESSAGE value="added collabeditresource to handle http stuff and make collabEdit to deal with parsing commands." />
     <MESSAGE value="wait for ops until any command received" />
     <MESSAGE value="reading works now!" />
+    <MESSAGE value="added tests to partial updates&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -883,11 +904,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/build.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="0" selection-start="300" selection-end="300" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/lib/junit-4.8.jar!/org/junit/Assert.class">
       <provider selected="true" editor-type-id="text-editor">
         <state line="90" column="0" selection-start="5043" selection-end="5043" vertical-scroll-proportion="0.0" />
@@ -903,11 +919,6 @@
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="jar:///System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/../Classes/alt-string.jar!/java/lang/String.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="16" selection-start="2633" selection-end="2633" vertical-scroll-proportion="0.33333334" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="18" selection-start="258" selection-end="258" vertical-scroll-proportion="0.0" />
@@ -918,11 +929,6 @@
         <state line="11" column="20" selection-start="466" selection-end="466" vertical-scroll-proportion="0.0">
           <folding />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/collabeditsync/CollabEdit.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="16" selection-start="907" selection-end="907" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/collabeditsync/Command.java">
@@ -951,21 +957,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/collabeditsync/CollabEditTest.java">
+    <entry file="jar://$APPLICATION_HOME_DIR$/lib/idea.jar!/com/intellij/openapi/editor/impl/DocumentImpl.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="97" column="37" selection-start="4486" selection-end="4486" vertical-scroll-proportion="0.0" />
+        <state line="30" column="11" selection-start="1730" selection-end="1730" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/collabeditsync/SyncPlugin.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="13" selection-start="2030" selection-end="2030" vertical-scroll-proportion="0.0">
+        <state line="38" column="31" selection-start="1398" selection-end="1398" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/../Classes/alt-string.jar!/java/lang/String.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="96" column="18" selection-start="3666" selection-end="3666" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/collabeditsync/CollabEditResource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="202" column="48" selection-start="7598" selection-end="7598" vertical-scroll-proportion="0.0">
+        <state line="198" column="16" selection-start="7331" selection-end="7331" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -974,7 +989,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/collabeditsync/CollabEditResourceTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="147" column="0" selection-start="5903" selection-end="5903" vertical-scroll-proportion="0.76407504">
+        <state line="84" column="0" selection-start="3230" selection-end="3230" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/collabeditsync/CollabEdit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="58" column="0" selection-start="1911" selection-end="1911" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/collabeditsync/CollabEditTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="102" column="34" selection-start="4619" selection-end="4637" vertical-scroll-proportion="0.19263457">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

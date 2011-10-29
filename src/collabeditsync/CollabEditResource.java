@@ -196,12 +196,12 @@ public class CollabEditResource {
         return (JSONObject) JSONSerializer.toJSON(rest);
     }
 
-    public void sendUpdate(int myOffset, String beforeText, String afterText, String newFullText) throws Exception {
+    public void sendUpdate(int myOffset, CharSequence beforeText, CharSequence afterText, CharSequence newFullText) throws IOException {
         List<JSONArray> ops = new ArrayList<JSONArray>();
 
         if (myOffset > 0) ops.add(indexElement(myOffset));
-        if (!beforeText.isEmpty()) ops.add(deleteElement(beforeText));
-        if (!afterText.isEmpty()) ops.add(insertElement(afterText));
+        if (beforeText.length() > 0) ops.add(deleteElement(beforeText));
+        if (afterText.length() > 0) ops.add(insertElement(afterText));
 
         String oldFullText = getOldText(myOffset, beforeText, afterText, newFullText);
 
@@ -211,7 +211,7 @@ public class CollabEditResource {
         JSONObject object = new JSONObject()
                 .element("cuid", cuid)
                 .element("parent_hash", DigestUtils.md5Hex(oldFullText.toString()))
-                .element("result_hash", DigestUtils.md5Hex(newFullText))
+                .element("result_hash", DigestUtils.md5Hex(newFullText.toString()))
                 .element("ops", ops);
 
         System.out.println("Sending out: " + object);
@@ -222,7 +222,7 @@ public class CollabEditResource {
         System.out.println("Response on update: " + json);
     }
 
-    private String getOldText(int myOffset, String beforeText, String afterText, String newFullText) {
+    private String getOldText(int myOffset, CharSequence beforeText, CharSequence afterText, CharSequence newFullText) {
         CharSequence firstPart = newFullText.subSequence(0, myOffset);
         CharSequence secondPart = newFullText.subSequence(myOffset + afterText.length(), newFullText.length());
 
@@ -232,14 +232,14 @@ public class CollabEditResource {
         return oldFullText.toString();
     }
 
-    private JSONArray insertElement(String text) {
+    private JSONArray insertElement(CharSequence text) {
         JSONArray insert = new JSONArray();
         insert.add(8); // insert code
         insert.add(text);
         return insert;
     }
 
-    private JSONArray deleteElement(String text) {
+    private JSONArray deleteElement(CharSequence text) {
         JSONArray delete = new JSONArray();
         delete.add(9); // delete code
         delete.add(text);

@@ -3,10 +3,14 @@ package collabeditsync;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.impl.DocumentImpl;
+import com.intellij.openapi.editor.impl.event.DocumentEventImpl;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.print.Doc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -95,7 +99,17 @@ public class CollabEditTest {
         verify(document).insertString(3, "test");
     }
 
-// TODO: remove if document is empty?
+    @Test
+    public void sendUpdatesOnEvent() throws Exception {
+        Document document = mock(Document.class);
+        when(document.getCharsSequence()).thenReturn("12345xx89");
+        DocumentEventImpl event = new DocumentEventImpl(document, 5, "67", "xx", System.currentTimeMillis(), false);
+
+        collabEdit.handle(event);
+        verify(collabEdit.resource).sendUpdate(5, "67", "xx", "12345xx89");
+    }
+
+    // TODO: remove if document is empty?
 //
 //   Received: {"op":{"ops":[[9,"p"]],"cuid":745865,"parent_hash":"83878c91171338902e0fe0fb97a8c47a","result_hash":"d41d8cd98f00b204e9800998ecf8427e"}}
 //[ 906781]  ERROR - pplication.impl.LaterInvocator - Wrong endOffset: 1; documentLength: 0
