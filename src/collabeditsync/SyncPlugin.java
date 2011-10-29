@@ -41,8 +41,35 @@ public class SyncPlugin implements SyncPluginInterface {
                         try {
                             System.out.println("Waiting for update!");
                             JSONObject json = collabEdit.waitForUpdate(false);
+//                            collabEdit.getDataToInsert();
                             JSONObject op = json.getJSONObject("op");
-//                            JSONArray ops = op.getJSONArray("ops");
+                            System.out.println(json);
+                            JSONArray ops = op.getJSONArray("ops");
+
+                            JSONArray delete = null;
+                            JSONArray add = null;
+                            JSONArray indexFromStart = null;
+                            JSONArray indexFromEnd = null;
+
+                            System.out.println("Detecting... ");
+                            for (int i = 0; i < ops.size(); i++) {
+                                JSONArray element = ops.getJSONArray(i);
+                                if (element.getInt(0) == 9) {
+                                    System.out.print("delete found ...");
+                                    delete = element;
+                                } else if (element.getInt(0) == 8) {
+                                    System.out.print("insert found ...");
+                                    delete = element;
+                                } else if (element.getInt(0) == 7) {
+                                    if (indexFromStart == null) {
+                                        System.out.println("index from start found...");
+                                        indexFromStart = element;
+                                    } else {
+                                        System.out.println("index from end found...");
+                                        indexFromEnd = element;
+                                    }
+                                }
+                            }
 
                             ApplicationManager.getApplication().invokeLater(new Runnable() {
                                 public void run() {
@@ -86,12 +113,12 @@ public class SyncPlugin implements SyncPluginInterface {
                }
 
 
-                try {
-                    JSONObject json = collabEdit.waitForUpdate(true);
-                    collabEdit.sendUpdate(json.getString("full_text"), documentEvent.getDocument().getText());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    JSONObject json = collabEdit.waitForUpdate(true);
+//                    collabEdit.sendUpdate(json.getString("full_text"), documentEvent.getDocument().getText());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
             }
         });
     }

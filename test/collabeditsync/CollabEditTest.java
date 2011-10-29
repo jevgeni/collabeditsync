@@ -1,5 +1,6 @@
 package collabeditsync;
 
+import com.intellij.openapi.editor.Document;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -29,4 +30,22 @@ public class CollabEditTest {
         Integer cuid = collab.extractCuid(responsePart);
         assertEquals(new Integer(744546), cuid);
     }
+    
+    //{"lang":"none","messages":[{"message_text":"renamed document to dd","nickname":"Jevgeni","type":5}],"name":"dd","user_list":["bob"]}
+
+   // op={"ops":[[7,1],[9,"zxxxx"],[8,"b"],[7,20]],"cuid":745713,"parent_hash":"b6c963fa53e083f41389c8478b88057c","result_hash":"e001a5db8a6f1f16b5c457779c2156a0"}
+//
+//    @Test
+//    public void insertCommant() throws Exception {
+//
+//        Command command = collab.waitForModificationCommand();
+//        command.delete.start;
+//        command.delete.end;
+//        command.insert.start;
+//        command.insert.start;
+//        Document document = null;
+//
+//    }
+
+    //  document.startGuardedBlockChecking(); ?
 }
