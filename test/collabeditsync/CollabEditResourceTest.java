@@ -55,6 +55,52 @@ public class CollabEditResourceTest {
         assertEquals(new Integer(744546), cuid);
     }
 
+
+    @Test
+    public void sendDeleteInsert() throws Exception {
+        mockResponse("{\"OK\":\"OK\"}");
+        resource.sendUpdate("old", "new");
+
+        List<NameValuePair> pairs = captureExecutedHttpPostEntityPairs(resource.client);
+        assertEquals("op", pairs.get(0).getName());
+
+        assertEquals("{\"cuid\":77777," +
+                "\"parent_hash\":\"149603e6c03516362a8da23f624db945\"," +
+                "\"result_hash\":\"22af645d1859cb5ca6da0c484f1f37ea\"," +
+                "\"ops\":[[9,\"old\"],[8,\"new\"]]}",
+                pairs.get(0).getValue());
+    }
+
+    @Test
+    public void sendInsertOnly() throws Exception {
+        mockResponse("{\"OK\":\"OK\"}");
+        resource.sendUpdate("", "new");
+
+        List<NameValuePair> pairs = captureExecutedHttpPostEntityPairs(resource.client);
+        assertEquals("op", pairs.get(0).getName());
+
+        assertEquals("{\"cuid\":77777," +
+                "\"parent_hash\":\"d41d8cd98f00b204e9800998ecf8427e\"," +
+                "\"result_hash\":\"22af645d1859cb5ca6da0c484f1f37ea\"," +
+                "\"ops\":[[8,\"new\"]]}",
+                pairs.get(0).getValue());
+    }
+
+    @Test
+    public void sendDeleteOnly() throws Exception {
+        mockResponse("{\"OK\":\"OK\"}");
+        resource.sendUpdate("old", "");
+
+        List<NameValuePair> pairs = captureExecutedHttpPostEntityPairs(resource.client);
+        assertEquals("op", pairs.get(0).getName());
+
+        assertEquals("{\"cuid\":77777," +
+                "\"parent_hash\":\"149603e6c03516362a8da23f624db945\"," +
+                "\"result_hash\":\"d41d8cd98f00b204e9800998ecf8427e\"," +
+                "\"ops\":[[9,\"old\"]]}",
+                pairs.get(0).getValue());
+    }
+
     @Test
     public void sendPartialModificationCommand() throws Exception {
         mockResponse("{\"OK\":\"OK\"}");
@@ -71,7 +117,7 @@ public class CollabEditResourceTest {
     }
 
     @Test
-    public void sendInsertOnly() throws Exception {
+    public void sendInsertOnlyWithOffsets() throws Exception {
         mockResponse("{\"OK\":\"OK\"}");
         resource.sendUpdate(7, "", "xyz", "1234567xyz890");
 
@@ -86,7 +132,7 @@ public class CollabEditResourceTest {
     }
 
     @Test
-    public void sendDeleteOnly() throws Exception {
+    public void sendDeleteOnlyWithOffsets() throws Exception {
         mockResponse("{\"OK\":\"OK\"}");
         resource.sendUpdate(5, "67", "", "12345890");
 

@@ -3,7 +3,6 @@ package collabeditsync;
 import com.intellij.openapi.editor.Document;
 
 public class Command {
-
     public static class Delete {
         public final int startOffset;
         public final int endOffset;
@@ -40,10 +39,14 @@ public class Command {
         }
     }
 
+    public final String parentHash;
+    public final String resultHash;
     public final Delete delete;
     public final Insert insert;
 
-    public Command(Delete delete, Insert insert) {
+    public Command(String parentHash, String resultHash, Delete delete, Insert insert) {
+        this.parentHash = parentHash;
+        this.resultHash = resultHash;
         this.delete = delete;
         this.insert = insert;
     }
@@ -58,7 +61,9 @@ public class Command {
     @Override
     public String toString() {
         return "Command{" +
-                "delete=" + delete +
+                "parentHash='" + parentHash + '\'' +
+                ", resultHash='" + resultHash + '\'' +
+                ", delete=" + delete +
                 ", insert=" + insert +
                 '}';
     }

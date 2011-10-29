@@ -27,6 +27,8 @@ public class CollabEdit {
             } while (!response.has("op"));
 
             JSONObject op = response.getJSONObject("op");
+            String parentHash = op.getString("parent_hash");
+            String resultHash = op.getString("result_hash");
             JSONArray ops = op.getJSONArray("ops");
 
             String deleteText = null;
@@ -46,7 +48,7 @@ public class CollabEdit {
 
             Command.Delete delete = deleteText != null ? new Command.Delete(startOffset, deleteText) : null;
             Command.Insert insert = addText != null ? new Command.Insert(startOffset, addText) : null;
-            return new Command(delete, insert);
+            return new Command(parentHash, resultHash, delete, insert);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (UnsuccessfulResponseException e) {

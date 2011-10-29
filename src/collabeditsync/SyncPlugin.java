@@ -6,11 +6,11 @@ import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
 import com.intellij.openapi.util.Computable;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.IOException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class SyncPlugin implements SyncPluginInterface {
 
@@ -18,7 +18,8 @@ public class SyncPlugin implements SyncPluginInterface {
 
     private final Lock lock = new ReentrantLock();
 
-    private String oldText = null;
+    private String currentText = null;
+    private String currentTextHash = null;
 
     public String getComponentName() {
         return PLUGIN_NAME;
@@ -43,12 +44,15 @@ public class SyncPlugin implements SyncPluginInterface {
                                         public void run() {
                                             synchronized (lock) {
                                                 try {
+                                                    if (command.resultHash.equals(currentTextHash)) return; // we are already updated
+
                                                     command.apply(test[0]);
-                                                    oldText = getDocumentText(test[0]);
+                                                    currentText = getDocumentText(test[0]);
+                                                    currentTextHash = DigestUtils.md5Hex(currentText);
                                                 } catch (IndexOutOfBoundsException e) {
                                                     try {
-                                                        oldText = edit.getFullText();
-                                                        test[0].setText(oldText);
+                                                        currentText = edit.getFullText();
+                                                        test[0].setText(currentText);
                                                     } catch (IOException e1) {
                                                         e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                                                     } catch (UnsuccessfulResponseException e1) {
@@ -80,19 +84,36 @@ public class SyncPlugin implements SyncPluginInterface {
                 while(true) {
                     if(test[0] != null) {
                         final Document document = test[0];
+                        ApplicationManager.getApplication().runReadAction(new Runnable() {
 
-                        synchronized (lock) {
-                            if (oldText == null) {
-                                oldText = getDocumentText(document);
+                            public void run() {
+
+                                synchronized (lock) {
+                                    if (currentText == null) {
+                                        currentText = getDocumentText(document);
+                                        currentTextHash = DigestUtils.md5Hex(currentText);
+                                    }
+                                }
                             }
-                        }
-                        sleep();
+                        });
 
-                        String newText = getDocumentText(document);
-                        synchronized (lock) {
-                            edit.update(oldText, newText);
-                            oldText = newText;
-                        }
+
+                        sleep();
+                        ApplicationManager.getApplication().runReadAction(new Runnable() {
+
+                            public void run() {
+
+                                String newText = getDocumentText(document);
+                                synchronized (lock) {
+                                    System.out.println(currentText);
+                                    System.out.println(newText);
+                                    System.out.println();
+                                    edit.update(currentText, newText);
+                                    currentText = newText;
+                                    currentTextHash = DigestUtils.md5Hex(currentText);
+                                }
+                            }
+                        });
 
                     } else {
                         try {
@@ -139,19 +160,15 @@ public class SyncPlugin implements SyncPluginInterface {
                 return document.getText();
             }
         });
-        System.out.println("----new: " + newText);
-        System.out.println("-------------------");
         return newText;
     }
 
     private void sleep() {
-        System.out.print("----Sleeping...");
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(" done sleeping");
     }
 
     public void disposeComponent() {

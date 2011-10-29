@@ -89,7 +89,7 @@ public class CollabEditTest {
 
     @Test
     public void applyModificationToDocument() throws Exception {
-        Command command = new Command(new Command.Delete(3, "qwerty"), new Command.Insert(3, "test"));
+        Command command = new Command("a", "b", new Command.Delete(3, "qwerty"), new Command.Insert(3, "test"));
         Document document = mock(Document.class);
         command.apply(document);
 

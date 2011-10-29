@@ -126,8 +126,8 @@ public class CollabEditResource {
 
     public void sendUpdate(String oldText, String newText) throws IOException, UnsuccessfulResponseException {
         List<JSONArray> ops = new ArrayList<JSONArray>();
-        ops.add(deleteElement(oldText));
-        ops.add(insertElement(newText));
+        if (!oldText.isEmpty()) ops.add(deleteElement(oldText));
+        if (!newText.isEmpty()) ops.add(insertElement(newText));
 
         JSONObject object = new JSONObject()
                 .element("cuid", cuid)
