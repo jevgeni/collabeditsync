@@ -9,8 +9,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class CollabEditTest {
@@ -71,6 +73,25 @@ public class CollabEditTest {
         assertEquals(5, command.delete.endOffset);
     }
 
+    @Test
+    public void waitForDataUntilOpsReceived() throws Exception {
+        String firstData = "{\"lang\":\"none\",\"messages\":[{\"message_text\":\"renamed document to dd\",\"nickname\":\"Jevgeni\",\"type\":5}],\"name\":\"dd\",\"user_list\":[\"bob\"]}";
+        String secondData = "{\"ops\":[[9,\"zxxxx\"],[7,20]],\"cuid\":745713}";
+        JSONObject firstJsonData = (JSONObject) JSONSerializer.toJSON(firstData);
+        JSONObject secondJsonData = (JSONObject) JSONSerializer.toJSON(secondData);
+        when(collabEdit.resource.waitForUpdate(false)).thenReturn(firstJsonData).thenReturn(secondJsonData);
 
+        Command command = collabEdit.waitForModificationCommand();
+        assertNotNull(command.delete);
+    }
 
+    @Test
+    public void applyModificationToDocument() throws Exception {
+        Command command = new Command(new Command.Delete(3, "qwerty"), new Command.Insert(3, "test"));
+        Document document = mock(Document.class);
+        command.apply(document);
+
+        verify(document).deleteString(3, 9);
+        verify(document).insertString(3, "test");
+    }
 }

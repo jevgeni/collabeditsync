@@ -1,6 +1,9 @@
 package collabeditsync;
 
+import com.intellij.openapi.editor.Document;
+
 public class Command {
+
     public static class Delete {
         public final int startOffset;
         public final int endOffset;
@@ -27,5 +30,11 @@ public class Command {
     public Command(Delete delete, Insert insert) {
         this.delete = delete;
         this.insert = insert;
+    }
+
+
+    public void apply(Document document) {
+        if (delete != null) document.deleteString(delete.startOffset, delete.endOffset);
+        if (insert != null) document.insertString(insert.offset, insert.text);
     }
 }

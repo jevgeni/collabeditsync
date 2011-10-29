@@ -30,7 +30,6 @@ public class CollabEditResourceTest {
         assertEquals(new Integer(744546), cuid);
     }
     
-    //{"lang":"none","messages":[{"message_text":"renamed document to dd","nickname":"Jevgeni","type":5}],"name":"dd","user_list":["bob"]}
 
 //
 

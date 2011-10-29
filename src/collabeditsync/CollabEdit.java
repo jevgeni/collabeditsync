@@ -10,11 +10,19 @@ import java.io.IOException;
 public class CollabEdit {
     CollabEditResource resource;
 
+    public void init() {
+
+    }
+
     public Command waitForModificationCommand() {
         try {
-            JSONObject response = resource.waitForUpdate(false);
+            JSONObject response;
+            do {
+                response = resource.waitForUpdate(false);
+                System.out.println("Received: " + response);
+            } while (!response.has("ops"));
+
             JSONArray ops = response.getJSONArray("ops");
-            System.out.println(ops);
 
             String deleteText = null;
             String addText = null;
