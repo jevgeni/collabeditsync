@@ -119,6 +119,22 @@ public class CollabEditTest {
         verify(collabEdit).update("old-text", "new-text");
     }
 
+    @Test
+    public void requestFullSyncIfProblemsWithUpdate() throws Exception {
+         doThrow(new UnsuccessfulResponseException()).doNothing()
+                 .when(collabEdit.resource).sendUpdate(anyString(), anyString());
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.accumulate("full_text", "xxx");
+        when(collabEdit.resource.waitForUpdate(true)).thenReturn(jsonObject);
+
+        collabEdit.update("old-text", "new-text");
+
+        verify(collabEdit.resource).waitForUpdate(true);
+        verify(collabEdit.resource).sendUpdate("old-text", "new-text");
+        verify(collabEdit.resource).sendUpdate("xxx", "new-text");
+    }
+
     // TODO: remove if document is empty?
 //
 //   Received: {"op":{"ops":[[9,"p"]],"cuid":745865,"parent_hash":"83878c91171338902e0fe0fb97a8c47a","result_hash":"d41d8cd98f00b204e9800998ecf8427e"}}

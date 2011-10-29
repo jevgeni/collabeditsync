@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3c044201-d04b-4941-a6e2-a765bdc851c6" name="Default" comment="">
+    <list default="true" id="3c044201-d04b-4941-a6e2-a765bdc851c6" name="Default" comment="use Timed thread instead of listener due to performance problems.">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/collabeditsync/UnsuccessfulResponseException.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/collabeditsync/CollabEdit.java" afterPath="$PROJECT_DIR$/src/collabeditsync/CollabEdit.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/collabeditsync/CollabEditResource.java" afterPath="$PROJECT_DIR$/src/collabeditsync/CollabEditResource.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/collabeditsync/SyncPlugin.java" afterPath="$PROJECT_DIR$/src/collabeditsync/SyncPlugin.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/collabeditsync/CollabEditResourceTest.java" afterPath="$PROJECT_DIR$/test/collabeditsync/CollabEditResourceTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/collabeditsync/CollabEditTest.java" afterPath="$PROJECT_DIR$/test/collabeditsync/CollabEditTest.java" />
     </list>
     <ignored path="collabeditsync.iws" />
@@ -26,21 +26,6 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <line_breakpoints>
-      <breakpoint url="file://$PROJECT_DIR$/src/collabeditsync/CollabEditResource.java" line="240" class="collabeditsync.CollabEditResource" package="collabeditsync">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </line_breakpoints>
     <breakpoint_any>
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -76,6 +61,10 @@
     <breakpoint_rules />
     <ui_properties />
   </component>
+  <component name="ErrorTreeViewConfiguration">
+    <option name="hideWarnings" value="true" />
+    <option name="HIDE_WARNINGS" value="true" />
+  </component>
   <component name="FavoritesManager">
     <favorites_list name="collabeditsync" />
   </component>
@@ -93,10 +82,19 @@
       <file leaf-file-name="CollabEditResource.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/collabeditsync/CollabEditResource.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="167" column="65" selection-start="6251" selection-end="6279" vertical-scroll-proportion="0.0">
+            <state line="37" column="13" selection-start="1426" selection-end="1426" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UnsuccessfulResponseException.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/collabeditsync/UnsuccessfulResponseException.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="44" selection-start="279" selection-end="279" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -104,28 +102,37 @@
       <file leaf-file-name="CollabEdit.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/collabeditsync/CollabEdit.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="70" column="48" selection-start="2349" selection-end="2349" vertical-scroll-proportion="0.0">
+            <state line="78" column="0" selection-start="2716" selection-end="2716" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Command.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/collabeditsync/Command.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="15" selection-start="634" selection-end="634" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CollabEditTest.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="CollabEditTest.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/collabeditsync/CollabEditTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="118" column="55" selection-start="5269" selection-end="5269" vertical-scroll-proportion="0.0">
+            <state line="128" column="29" selection-start="5642" selection-end="5642" vertical-scroll-proportion="0.44759208">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JSONObject.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/lib/default/json-lib-jar-2.4.jar!/net/sf/json/JSONObject.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="5" column="19" selection-start="155" selection-end="155" vertical-scroll-proportion="-2.4">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ivy.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ivy.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="67" selection-start="683" selection-end="683" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -141,10 +148,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SyncPlugin.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="SyncPlugin.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/collabeditsync/SyncPlugin.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="47" selection-start="645" selection-end="645" vertical-scroll-proportion="0.28700906">
+            <state line="35" column="41" selection-start="1338" selection-end="1338" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -154,24 +161,6 @@
         <entry file="jar://$APPLICATION_HOME_DIR$/lib/openapi.jar!/com/intellij/openapi/application/Application.class">
           <provider selected="true" editor-type-id="text-editor">
             <state line="7" column="9" selection-start="259" selection-end="259" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StringInputStream.class" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/lib/default/ant-jar-1.6.2.jar!/org/apache/tools/ant/filters/StringInputStream.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="13" selection-start="166" selection-end="166" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HttpClient.class" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/lib/default/httpclient-jar-4.1.2.jar!/org/apache/http/client/HttpClient.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="33" selection-start="522" selection-end="522" vertical-scroll-proportion="-4.36">
               <folding />
             </state>
           </provider>
@@ -191,7 +180,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/jevgeni/github/CollabEdit.java" />
         <option value="$PROJECT_DIR$/plugin/src/github/SyncPlugin.java" />
         <option value="$PROJECT_DIR$/plugin/src/jevgeni/github/SyncPlugin.java" />
         <option value="$PROJECT_DIR$/plugin/src/jevgeni/github/CollabEdit.java" />
@@ -199,14 +187,15 @@
         <option value="$PROJECT_DIR$/../idea/platform/platform-impl/src/com/intellij/openapi/application/impl/ApplicationImpl.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/build.xml" />
-        <option value="$PROJECT_DIR$/ivy.xml" />
         <option value="$PROJECT_DIR$/src/collabeditsync/Command.java" />
         <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
         <option value="$PROJECT_DIR$/test/collabeditsync/CollabEditResourceTest.java" />
-        <option value="$PROJECT_DIR$/src/collabeditsync/CollabEditResource.java" />
-        <option value="$PROJECT_DIR$/test/collabeditsync/CollabEditTest.java" />
         <option value="$PROJECT_DIR$/src/collabeditsync/CollabEdit.java" />
         <option value="$PROJECT_DIR$/src/collabeditsync/SyncPlugin.java" />
+        <option value="$PROJECT_DIR$/src/collabeditsync/CollabEditResource.java" />
+        <option value="$PROJECT_DIR$/src/collabeditsync/UnsuccessfulResponseException.java" />
+        <option value="$PROJECT_DIR$/ivy.xml" />
+        <option value="$PROJECT_DIR$/test/collabeditsync/CollabEditTest.java" />
       </list>
     </option>
   </component>
@@ -450,29 +439,7 @@
       <recent name="jevgeni.github" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.CollabEditTest.sendFullUpdates">
-    <configuration default="false" name="CollabEditResource" type="Application" factoryName="Application" temporary="true">
-      <extension name="coverage" enabled="false" merge="false">
-        <pattern>
-          <option name="PATTERN" value="collabeditsync.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="MAIN_CLASS_NAME" value="collabeditsync.CollabEditResource" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="collabeditsync" />
-      <envs />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="JUnit.CollabEditTest.requestFullSyncIfProblemsWithUpdate">
     <configuration default="false" name="CollabEditTest.sendUpdatesOnEvent" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false">
         <pattern>
@@ -582,6 +549,40 @@
       <envs />
       <patterns />
       <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="CollabEditTest.requestFullSyncIfProblemsWithUpdate" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false">
+        <pattern>
+          <option name="PATTERN" value="collabeditsync.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="collabeditsync" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="collabeditsync" />
+      <option name="MAIN_CLASS_NAME" value="collabeditsync.CollabEditTest" />
+      <option name="METHOD_NAME" value="requestFullSyncIfProblemsWithUpdate" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="50144" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
@@ -802,11 +803,11 @@
     </configuration>
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Plugin.Plugin" />
-      <item index="1" class="java.lang.String" itemvalue="Application.CollabEditResource" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.CollabEditTest.sendUpdatesOnEvent" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.CollabEditTest" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.CollabEditTest.sendUpdatesOnlyForDifferences" />
-      <item index="5" class="java.lang.String" itemvalue="JUnit.CollabEditTest.sendFullUpdates" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.CollabEditTest.sendUpdatesOnEvent" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.CollabEditTest" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.CollabEditTest.sendUpdatesOnlyForDifferences" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.CollabEditTest.sendFullUpdates" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.CollabEditTest.requestFullSyncIfProblemsWithUpdate" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -848,16 +849,16 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3287879" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37424242" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4121212" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IvyIDEA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32776934" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3287879" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32515338" sideWeight="0.4983165" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32925835" sideWeight="0.6257576" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32925835" sideWeight="0.65909094" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3409091" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3409091" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -894,7 +895,7 @@
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="send updates on event" />
+    <option name="LAST_COMMIT_MESSAGE" value="use Timed thread instead of listener due to performance problems." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -912,6 +913,7 @@
     <MESSAGE value="reading works now!" />
     <MESSAGE value="added tests to partial updates&#10;" />
     <MESSAGE value="send updates on event" />
+    <MESSAGE value="use Timed thread instead of listener due to performance problems." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -921,21 +923,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/junit-4.8.jar!/org/junit/Assert.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="90" column="0" selection-start="5043" selection-end="5043" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../idea/platform/platform-impl/src/com/intellij/openapi/application/impl/ApplicationImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="877" column="46" selection-start="28703" selection-end="28703" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/collabeditsync.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="18" selection-start="258" selection-end="258" vertical-scroll-proportion="0.0" />
@@ -997,35 +984,56 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/collabeditsync/CollabEditTest.java">
+    <entry file="file://$PROJECT_DIR$/src/collabeditsync/SyncPlugin.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="118" column="55" selection-start="5269" selection-end="5269" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state line="35" column="41" selection-start="1338" selection-end="1338" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/collabeditsync/UnsuccessfulResponseException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="44" selection-start="279" selection-end="279" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/collabeditsync/CollabEditResource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="167" column="65" selection-start="6251" selection-end="6279" vertical-scroll-proportion="0.0">
+        <state line="37" column="13" selection-start="1426" selection-end="1426" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/collabeditsync/CollabEdit.java">
+    <entry file="file://$PROJECT_DIR$/ivy.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="48" selection-start="2349" selection-end="2349" vertical-scroll-proportion="0.0">
+        <state line="9" column="67" selection-start="683" selection-end="683" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/collabeditsync/SyncPlugin.java">
+    <entry file="file://$PROJECT_DIR$/src/collabeditsync/CollabEdit.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="47" selection-start="645" selection-end="645" vertical-scroll-proportion="0.28700906">
+        <state line="78" column="0" selection-start="2716" selection-end="2716" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/default/json-lib-jar-2.4.jar!/net/sf/json/JSONObject.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="19" selection-start="155" selection-end="155" vertical-scroll-proportion="-2.4">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/collabeditsync/CollabEditTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="128" column="29" selection-start="5642" selection-end="5642" vertical-scroll-proportion="0.44759208">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

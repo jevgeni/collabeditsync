@@ -78,10 +78,12 @@ public class CollabEditResource {
             System.out.println("Nick changed to " + nick);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (UnsuccessfulResponseException e) {
+            e.printStackTrace();
         }
     }
 
-    private String postTo(HttpClient client, String url, List<NameValuePair> params) throws IOException {
+    private String postTo(HttpClient client, String url, List<NameValuePair> params) throws IOException, UnsuccessfulResponseException {
         // set up httppost
         UrlEncodedFormEntity entity = null;
         try {
@@ -92,6 +94,11 @@ public class CollabEditResource {
         HttpPost post = new HttpPost(url);
         post.setEntity(entity);
         HttpResponse response = client.execute(post, context);
+        if(response.getStatusLine().getStatusCode() != 200) {
+            response.getEntity().getContent().close();
+            throw new UnsuccessfulResponseException(response.getStatusLine());
+        }
+
         String body = IOUtils.toString(response.getEntity().getContent());
         response.getEntity().getContent().close();
         return body;
@@ -108,86 +115,7 @@ public class CollabEditResource {
         return params;
     }
 
-    public static void main(String[] args) throws Exception, InterruptedException {
-//        op:{"cuid":742554,"parent_hash":"1dc5c36c3799e70f665adc92456b5880", "result_hash":"0ecd11c1d7a287401d148a23bbd7a2f8","ops":[[9,"vqugd"],[8,"JSON"]]}
-
-
-
-
-//
-//       int cuid = 1;
-//       int i = 0;
-//       do {
-//           JSONObject json = waitForUpdate(client, context, cuid);
-//
-//           System.out.println(json);
-//           if (json.has("new_cuid")) cuid = json.getInt("new_cuid");
-//           else {
-//               String beforeText = json.getString("full_text");
-//               System.out.println(beforeText);
-//
-////               {"cuid":743064,"parent_hash":"1cb251ec0d568de6a929b520c4aed8d1","result_hash":"104f0d473d70279b5b252246b8e71e84","ops":[[9,"text"],[8,"\ntext\n"]]}
-////               {"cuid":743033,"parent_hash":"1cb251ec0d568de6a929b520c4aed8d1","result_hash":"104f0d473d70279b5b252246b8e71e84","ops":[[9,"text"],[8,"\ntext\n"]]}
-////
-////
-//sendPartialModificationCommand(client, context, cuid, beforeText, "\ntext\n");
-//
-////text
-////
-//
-//           }
-//           System.out.println(cuid);
-//
-//           i++;
-//           Thread.sleep(1000);
-//        } while(i < 2);
-//
-//
-//
-//
-//
-//        FileSystemManager fsManager = VFS.getManager();
-//        FileObject fileObject = fsManager.resolveFile("/Users/jevgeni/projects/collabeditsync/src/main/java/Test.java");
-//
-//
-//        final int finalCuid = cuid;
-//        DefaultFileMonitor fm = new DefaultFileMonitor(new FileListener() {
-//            public void fileCreated(FileChangeEvent fileChangeEvent) throws Exception {
-//
-//                System.out.println(fileChangeEvent);
-//            }
-//
-//            public void fileDeleted(FileChangeEvent fileChangeEvent) throws Exception {
-//                System.out.println(fileChangeEvent);
-//            }
-//
-//            public void fileChanged(FileChangeEvent fileChangeEvent) throws Exception {
-//                JSONObject json = waitForUpdate(client, context, finalCuid);
-//
-//
-//                String beforeText = json.getString("full_text");
-//                System.out.println(beforeText);
-//
-//                String afterText = IOUtils.toString(fileChangeEvent.getFile().waitForUpdate().getInputStream());
-//                System.out.println(afterText);
-//
-//                sendPartialModificationCommand(client, context, finalCuid, beforeText, afterText);
-//            }
-//        });
-//        fm.setRecursive(true);
-//        fm.addFile(fileObject);
-//        fm.setDelay(50);
-//        fm.start();
-//        Thread.sleep(600000);
-
-
-
-
-//        System.out.println(IOUtils.toString(response.getEntity().waitForUpdate()));
-
-    }
-
-    public JSONObject waitForUpdate(Boolean resync) throws IOException {
+    public JSONObject waitForUpdate(Boolean resync) throws IOException, UnsuccessfulResponseException {
         if (cuid == null) throw new IllegalStateException("Cannot query as I don't have CUID yet!");
 
         final String url = "http://collabedit.com/ot/wait";
@@ -196,7 +124,7 @@ public class CollabEditResource {
         return (JSONObject) JSONSerializer.toJSON(rest);
     }
 
-    public void sendUpdate(String oldText, String newText) throws IOException {
+    public void sendUpdate(String oldText, String newText) throws IOException, UnsuccessfulResponseException {
         List<JSONArray> ops = new ArrayList<JSONArray>();
         ops.add(deleteElement(oldText));
         ops.add(insertElement(newText));
@@ -210,13 +138,13 @@ public class CollabEditResource {
         System.out.println("Sending out: " + object);
 
         String rest = postTo(client, "http://collabedit.com/ot/post", withParams("op", object.toString()));
-
+        System.out.println("Response " + rest);
         JSONObject json = (JSONObject) JSONSerializer.toJSON(rest);
-        System.out.println("Response on update: " + json);
+        System.out.println("Json: " + json);
     }
 
     @Deprecated
-    public void sendUpdate(int myOffset, CharSequence beforeText, CharSequence afterText, CharSequence newFullText) throws IOException {
+    public void sendUpdate(int myOffset, CharSequence beforeText, CharSequence afterText, CharSequence newFullText) throws IOException, UnsuccessfulResponseException {
         List<JSONArray> ops = new ArrayList<JSONArray>();
 
         if (myOffset > 0) ops.add(indexElement(myOffset));

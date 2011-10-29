@@ -32,7 +32,7 @@ public class SyncPlugin implements SyncPluginInterface {
 
                                     ApplicationManager.getApplication().runWriteAction(new Runnable() {
                                         public void run() {
-                                            command.apply(test[0]);
+//                                            command.apply(test[0]);
                                         }
                                     });
 
@@ -121,7 +121,7 @@ public class SyncPlugin implements SyncPluginInterface {
     private void sleep() {
         System.out.print("----Sleeping...");
         try {
-            Thread.sleep(500);
+            Thread.sleep(2500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

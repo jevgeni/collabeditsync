@@ -49,17 +49,22 @@ public class CollabEdit {
             return new Command(delete, insert);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (UnsuccessfulResponseException e) {
+            e.printStackTrace();
         }
 
         return null;
     }
 
 
+    @Deprecated
     public void handle(DocumentEvent event) {
         try {
             resource.sendUpdate(event.getOffset(), event.getOldFragment(), event.getNewFragment(), event.getDocument().getCharsSequence());
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (UnsuccessfulResponseException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 
@@ -67,15 +72,15 @@ public class CollabEdit {
         if (oldText.equals(newText)) return;
         try {
             resource.sendUpdate(oldText, newText);
-        } catch (JSONException e) {
+        } catch (UnsuccessfulResponseException e) {
             System.out.println("full sync needed");
             try {
                 JSONObject response = resource.waitForUpdate(true);
                 oldText = response.getString("full_text");
                 resource.sendUpdate(oldText, newText);
-            } catch (IOException e1) {
-                System.err.println("exception...");
-                e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (Exception e1) {
+                System.err.println("Cannot recover...");
+                e1.printStackTrace();
             }
         } catch (Exception e) {
             e.printStackTrace();
