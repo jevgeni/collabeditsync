@@ -5,9 +5,11 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.ProtocolVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicStatusLine;
 import org.apache.http.protocol.HttpContext;
 import org.apache.tools.ant.filters.StringInputStream;
 import org.junit.Before;
@@ -138,6 +140,7 @@ public class CollabEditResourceTest {
     private void mockResponse(String ressponse) throws IOException {
         HttpResponse response = mock(HttpResponse.class, RETURNS_DEEP_STUBS);
         when(response.getEntity().getContent()).thenReturn(new StringInputStream(ressponse));
+        when(response.getStatusLine()).thenReturn(new BasicStatusLine(new ProtocolVersion("http", 1, 1), 200, "OK"));
         when(resource.client.execute(any(HttpPost.class), any(HttpContext.class))).thenReturn(response);
     }
 

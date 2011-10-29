@@ -116,7 +116,7 @@ public class CollabEditTest {
     @Test
     public void sendFullUpdates() throws Exception {
         collabEdit.update("old-text", "new-text");
-        verify(collabEdit).update("old-text", "new-text");
+        verify(collabEdit.resource).sendUpdate("old-text", "new-text");
     }
 
     @Test
