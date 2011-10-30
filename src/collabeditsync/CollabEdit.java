@@ -26,7 +26,9 @@ public class CollabEdit {
                 System.out.println("Received: " + response);
             } while (!response.has("op"));
 
+            // TODO: cover with tests cuid/parent_Hash_result_Hash
             JSONObject op = response.getJSONObject("op");
+            Integer cuid = op.getInt("cuid");
             String parentHash = op.getString("parent_hash");
             String resultHash = op.getString("result_hash");
             JSONArray ops = op.getJSONArray("ops");
@@ -48,7 +50,7 @@ public class CollabEdit {
 
             Command.Delete delete = deleteText != null ? new Command.Delete(startOffset, deleteText) : null;
             Command.Insert insert = addText != null ? new Command.Insert(startOffset, addText) : null;
-            return new Command(parentHash, resultHash, delete, insert);
+            return new Command(cuid, parentHash, resultHash, delete, insert);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (UnsuccessfulResponseException e) {
@@ -91,5 +93,9 @@ public class CollabEdit {
         String oldText;JSONObject response = resource.waitForUpdate(true);
         oldText = response.getString("full_text");
         return oldText;
+    }
+
+    public boolean isMyOwnCommand(Command command) {
+        return command.cuid.equals(resource.cuid);
     }
 }

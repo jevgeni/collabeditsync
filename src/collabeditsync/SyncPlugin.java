@@ -14,7 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class SyncPlugin implements SyncPluginInterface {
 
-    private final CollabEdit edit = new CollabEdit();
+    CollabEdit edit = new CollabEdit();
 
     private final Lock lock = new ReentrantLock();
 
@@ -23,6 +23,13 @@ public class SyncPlugin implements SyncPluginInterface {
 
     public String getComponentName() {
         return PLUGIN_NAME;
+    }
+
+    public void setInitialDocumentText(String text) {
+        currentText = text;
+    }
+
+    public void documentUpdated(String text) {
     }
 
     public void initComponent() {
@@ -44,8 +51,7 @@ public class SyncPlugin implements SyncPluginInterface {
                                         public void run() {
                                             synchronized (lock) {
                                                 try {
-                                                    if (command.resultHash.equals(currentTextHash)) return; // we are already updated
-
+                                                    if(edit.isMyOwnCommand(command)) return;
                                                     command.apply(test[0]);
                                                     currentText = getDocumentText(test[0]);
                                                     currentTextHash = DigestUtils.md5Hex(currentText);
@@ -175,4 +181,7 @@ public class SyncPlugin implements SyncPluginInterface {
         //do nothing
     }
 
+    public void applyUpcomingCommand() {
+
+    }
 }

@@ -12,9 +12,8 @@ import org.junit.Test;
 
 import javax.print.Doc;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.*;
 
 public class CollabEditTest {
@@ -89,7 +88,7 @@ public class CollabEditTest {
 
     @Test
     public void applyModificationToDocument() throws Exception {
-        Command command = new Command("a", "b", new Command.Delete(3, "qwerty"), new Command.Insert(3, "test"));
+        Command command = new Command(123, "a", "b", new Command.Delete(3, "qwerty"), new Command.Insert(3, "test"));
         Document document = mock(Document.class);
         command.apply(document);
 
@@ -133,6 +132,15 @@ public class CollabEditTest {
         verify(collabEdit.resource).waitForUpdate(true);
         verify(collabEdit.resource).sendUpdate("old-text", "new-text");
         verify(collabEdit.resource).sendUpdate("xxx", "new-text");
+    }
+
+    @Test
+    public void checkIfCommandIsMyOwn() throws Exception {
+        Command command = new Command(123, null, null, null, null);
+        collabEdit.resource.cuid = 123;
+        assertTrue(collabEdit.isMyOwnCommand(command));
+        collabEdit.resource.cuid = 567;
+        assertFalse(collabEdit.isMyOwnCommand(command));
     }
 
     // TODO: remove if document is empty?

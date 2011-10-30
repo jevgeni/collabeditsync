@@ -39,12 +39,14 @@ public class Command {
         }
     }
 
+    public final Integer cuid;
     public final String parentHash;
     public final String resultHash;
     public final Delete delete;
     public final Insert insert;
 
-    public Command(String parentHash, String resultHash, Delete delete, Insert insert) {
+    public Command(Integer cuid, String parentHash, String resultHash, Delete delete, Insert insert) {
+        this.cuid = cuid;
         this.parentHash = parentHash;
         this.resultHash = resultHash;
         this.delete = delete;
