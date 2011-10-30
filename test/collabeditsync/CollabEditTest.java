@@ -137,10 +137,22 @@ public class CollabEditTest {
     @Test
     public void checkIfCommandIsMyOwn() throws Exception {
         Command command = new Command(123, null, null, null, null);
-        collabEdit.resource.cuid = 123;
+        collabEdit.setCuid(123);
         assertTrue(collabEdit.isMyOwnCommand(command));
-        collabEdit.resource.cuid = 567;
+        collabEdit.setCuid(567);
         assertFalse(collabEdit.isMyOwnCommand(command));
+    }
+
+    @Test
+    public void waitForNotOwnModificationCommand() throws Exception {
+        collabEdit = spy(collabEdit);
+        collabEdit.setCuid(123);
+        Command c1 = new Command(123, null, null, null, null);
+        Command c2 = new Command(567, null, null, null, null);
+        doReturn(c1).doReturn(c2).when(collabEdit).waitForModificationCommand();
+
+        assertEquals(c2, collabEdit.waitForExternalModificationCommand());
+
     }
 
     // TODO: remove if document is empty?

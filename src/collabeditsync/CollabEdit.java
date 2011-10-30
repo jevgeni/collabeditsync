@@ -18,7 +18,16 @@ public class CollabEdit {
         }
     }
 
-    public Command waitForModificationCommand() {
+    public Command waitForExternalModificationCommand() {
+        Command command;
+        do {
+            command = waitForModificationCommand();
+        } while (isMyOwnCommand(command));
+
+        return command;
+    }
+
+    Command waitForModificationCommand() {
         try {
             JSONObject response;
             do {
@@ -96,6 +105,14 @@ public class CollabEdit {
     }
 
     public boolean isMyOwnCommand(Command command) {
-        return command.cuid.equals(resource.cuid);
+        return command.cuid.equals(getCuid());
+    }
+
+    private Integer getCuid() {
+        return resource.cuid;
+    }
+
+    public void setCuid(int cuid) {
+        resource.cuid = cuid;
     }
 }

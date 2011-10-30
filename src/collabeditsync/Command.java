@@ -63,7 +63,8 @@ public class Command {
     @Override
     public String toString() {
         return "Command{" +
-                "parentHash='" + parentHash + '\'' +
+                "cuid=" + cuid +
+                ", parentHash='" + parentHash + '\'' +
                 ", resultHash='" + resultHash + '\'' +
                 ", delete=" + delete +
                 ", insert=" + insert +
