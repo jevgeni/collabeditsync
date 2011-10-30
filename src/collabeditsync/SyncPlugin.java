@@ -19,7 +19,6 @@ public class SyncPlugin implements SyncPluginInterface {
     private final Lock lock = new ReentrantLock();
 
     private String currentText = null;
-    private String currentTextHash = null;
 
     public String getComponentName() {
         return PLUGIN_NAME;
@@ -53,7 +52,6 @@ public class SyncPlugin implements SyncPluginInterface {
                                                 try {
                                                     command.apply(test[0]);
                                                     currentText = getDocumentText(test[0]);
-                                                    currentTextHash = DigestUtils.md5Hex(currentText);
                                                 } catch (IndexOutOfBoundsException e) {
                                                     try {
                                                         currentText = edit.getFullText();
@@ -96,7 +94,6 @@ public class SyncPlugin implements SyncPluginInterface {
                                 synchronized (lock) {
                                     if (currentText == null) {
                                         currentText = getDocumentText(document);
-                                        currentTextHash = DigestUtils.md5Hex(currentText);
                                     }
                                 }
                             }
@@ -115,7 +112,6 @@ public class SyncPlugin implements SyncPluginInterface {
                                     System.out.println();
                                     edit.update(currentText, newText);
                                     currentText = newText;
-                                    currentTextHash = DigestUtils.md5Hex(currentText);
                                 }
                             }
                         });
@@ -137,23 +133,10 @@ public class SyncPlugin implements SyncPluginInterface {
             }
 
             public void documentChanged(DocumentEvent documentEvent) {
-//                System.out.println("after!");
-//                System.out.println(documentEvent);
-
                if (test[0] == null) {
                    test[0] = documentEvent.getDocument();
                    System.out.println("Detected document: " + test[0]);
                }
-
-//                edit.handle(documentEvent);
-
-
-//                try {
-//                    JSONObject json = collabEdit.waitForUpdate(true);
-//                    collabEdit.sendPartialModificationCommand(json.getString("full_text"), documentEvent.getDocument().getText());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
             }
         });
     }
