@@ -1,10 +1,12 @@
 package collabeditsync;
 
-import com.intellij.openapi.editor.event.DocumentEvent;
-import com.intellij.openapi.editor.impl.event.DocumentEventImpl;
+import name.fraser.neil.plaintext.diff_match_patch;
 import net.sf.json.*;
 
 import java.io.IOException;
+import java.util.LinkedList;
+
+import static name.fraser.neil.plaintext.diff_match_patch.*;
 
 public class CollabEdit {
     CollabEditResource resource = new CollabEditResource("m37ga");
@@ -70,21 +72,57 @@ public class CollabEdit {
     }
 
 
-    @Deprecated
-    public void handle(DocumentEvent event) {
-        try {
-            resource.sendUpdate(event.getOffset(), event.getOldFragment(), event.getNewFragment(), event.getDocument().getCharsSequence());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsuccessfulResponseException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+    public void diffUpdate(CharSequence textBefore, CharSequence textAfter) throws UnsuccessfulResponseException, IOException {
+        diff_match_patch dmp = new diff_match_patch();
+        LinkedList<Diff> diffs = dmp.diff_main(textBefore.toString(), textAfter.toString());
+        dmp.diff_cleanupSemantic(diffs);
+        System.out.println(diffs);
+
+        CharSequence delete = "";
+        CharSequence insert = "";
+        int myOffset = 0;
+        for(int i = 0; i < diffs.size(); i++) {
+            Diff diff = diffs.get(i);
+            switch (diff.operation) {
+                case EQUAL:
+                    if (delete.length() > 0 || insert.length() > 0) {
+                        textBefore = tryPartialUpdate(myOffset, delete, insert, textBefore);
+                        myOffset += insert.length();
+                        delete = "";
+                        insert = "";
+                    }
+                    myOffset += diff.text.length();
+                    break;
+                case DELETE:
+                    delete = diff.text;
+                    break;
+                case INSERT:
+                    insert = diff.text;
+                    break;
+            }
         }
+
+        if (delete.length() > 0 || insert.length() > 0) {
+            tryPartialUpdate(myOffset, delete, insert, textBefore);
+        }
+    }
+
+    private CharSequence tryPartialUpdate(int myOffset, CharSequence delete, CharSequence insert, CharSequence textBefore) throws IOException, UnsuccessfulResponseException {
+        StringBuilder builder = new StringBuilder();
+        builder.append(textBefore.subSequence(0, myOffset));
+        builder.append(insert);
+        builder.append(textBefore.subSequence(myOffset + delete.length(), textBefore.length()));
+        textBefore = builder.toString();
+
+        resource.sendUpdate(myOffset, delete, insert, textBefore);
+
+        return textBefore;
     }
 
     public void update(String oldText, String newText) {
         if (oldText.equals(newText)) return;
         try {
-            resource.sendUpdate(oldText, newText);
+            diffUpdate(oldText, newText);
         } catch (UnsuccessfulResponseException e) {
             System.out.println("full sync needed");
             try {

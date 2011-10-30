@@ -1,16 +1,11 @@
 package collabeditsync;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.impl.DocumentImpl;
-import com.intellij.openapi.editor.impl.event.DocumentEventImpl;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-
-import javax.print.Doc;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
@@ -75,6 +70,7 @@ public class CollabEditTest {
     }
 
     @Test
+    @Ignore
     public void waitForDataUntilOpsReceived() throws Exception {
         String firstData = "{\"lang\":\"none\",\"messages\":[{\"message_text\":\"renamed document to dd\",\"nickname\":\"Jevgeni\",\"type\":5}],\"name\":\"dd\",\"user_list\":[\"bob\"]}";
         String secondData = "{\"op\":{\"ops\":[[9,\"zxxxx\"],[7,20]],\"cuid\":745713}}";
@@ -94,16 +90,6 @@ public class CollabEditTest {
 
         verify(document).deleteString(3, 9);
         verify(document).insertString(3, "test");
-    }
-
-    @Test
-    public void sendUpdatesOnEvent() throws Exception {
-        Document document = mock(Document.class);
-        when(document.getCharsSequence()).thenReturn("12345xx89");
-        DocumentEventImpl event = new DocumentEventImpl(document, 5, "67", "xx", System.currentTimeMillis(), false);
-
-        collabEdit.handle(event);
-        verify(collabEdit.resource).sendUpdate(5, "67", "xx", "12345xx89");
     }
 
     @Test
@@ -152,8 +138,67 @@ public class CollabEditTest {
         doReturn(c1).doReturn(c2).when(collabEdit).waitForModificationCommand();
 
         assertEquals(c2, collabEdit.waitForExternalModificationCommand());
-
     }
+
+    @Test
+    public void insertDeleteDiff() throws Exception {
+        collabEdit.diffUpdate("ABC", "AxC");
+        verify(collabEdit.resource).sendUpdate(1, "B", "x", "AxC");
+    }
+
+    @Test
+    public void insertDiffAtFront() throws Exception {
+        collabEdit.diffUpdate("ABC", "aABC");
+        verify(collabEdit.resource).sendUpdate(0, "", "a", "aABC");
+        verifyNoMoreInteractions(collabEdit.resource);
+    }
+
+    @Test
+    public void insertDiffAtEnd() throws Exception {
+        collabEdit.diffUpdate("ABC", "ABCd");
+        verify(collabEdit.resource).sendUpdate(3, "", "d", "ABCd");
+        verifyNoMoreInteractions(collabEdit.resource);
+    }
+
+    @Test
+    public void insertDiffInTheMiddle() throws Exception {
+        collabEdit.diffUpdate("ABC", "ABxC");
+        verify(collabEdit.resource).sendUpdate(2, "", "x", "ABxC");
+        verifyNoMoreInteractions(collabEdit.resource);
+    }
+
+    @Test
+    public void deleteDiffAtFront() throws Exception {
+        collabEdit.diffUpdate("xABC", "ABC");
+        verify(collabEdit.resource).sendUpdate(0, "x", "", "ABC");
+        verifyNoMoreInteractions(collabEdit.resource);
+    }
+
+    @Test
+    public void deleteDiffAtEnd() throws Exception {
+        collabEdit.diffUpdate("ABCx", "ABC");
+        verify(collabEdit.resource).sendUpdate(3, "x", "", "ABC");
+        verifyNoMoreInteractions(collabEdit.resource);
+    }
+
+    @Test
+    public void deleteDiffInTheMiddle() throws Exception {
+        collabEdit.diffUpdate("ABxC", "ABC");
+        verify(collabEdit.resource).sendUpdate(2, "x", "", "ABC");
+        verifyNoMoreInteractions(collabEdit.resource);
+    }
+
+        @Test
+    public void insertDeleteDiffMultipleTimes() throws Exception {
+        collabEdit.diffUpdate("ABCDEF", "AyCDxxF");
+        verify(collabEdit.resource).sendUpdate(1, "B", "y", "AyCDEF");
+        verify(collabEdit.resource).sendUpdate(4, "E", "xx", "AyCDxxF");
+        verifyNoMoreInteractions(collabEdit.resource);
+    }
+
+
+
+
 
     // TODO: remove if document is empty?
 //

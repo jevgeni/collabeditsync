@@ -143,7 +143,6 @@ public class CollabEditResource {
         System.out.println("Json: " + json);
     }
 
-    @Deprecated
     public void sendUpdate(int myOffset, CharSequence beforeText, CharSequence afterText, CharSequence newFullText) throws IOException, UnsuccessfulResponseException {
         List<JSONArray> ops = new ArrayList<JSONArray>();
 
