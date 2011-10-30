@@ -90,6 +90,23 @@ public class CollabEditTest {
         assertEquals("sfa", command.diffs.get(1).text);
     }
 
+    @Test
+    public void multipleDiffsWithSingleMiddleOffset() throws Exception {
+        mockWaitForUpdate("{\"op\":{\"ops\":[[9,\"f\"],[7,1],[8,\"fdfdf\"]],\"cuid\":746944,\"parent_hash\":\"36eba1e1e343279857ea7f69a597324e\",\"result_hash\":\"ae27a4b4821b13cad2a17a75d219853e\"}}");
+
+        Command command = collabEdit.waitForModificationCommands();
+        System.out.println(command);
+
+        assertEquals(DELETE, command.diffs.get(0).operation);
+        assertEquals(0, command.diffs.get(0).startOffset);
+        assertEquals("f", command.diffs.get(0).text);
+        assertEquals(1, command.diffs.get(0).endOffset);
+
+        assertEquals(INSERT, command.diffs.get(1).operation);
+        assertEquals(1, command.diffs.get(1).startOffset);
+        assertEquals("fdfdf", command.diffs.get(1).text);
+    }
+
     private void mockWaitForUpdate(String data) throws IOException, UnsuccessfulResponseException {
         JSONObject jsonData = (JSONObject) JSONSerializer.toJSON(data);
         when(collabEdit.resource.waitForUpdate(false)).thenReturn(jsonData);

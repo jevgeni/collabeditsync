@@ -48,8 +48,6 @@ public class CollabEdit {
             String resultHash = op.getString("result_hash");
             JSONArray ops = op.getJSONArray("ops");
 
-//            String deleteText = null;
-//            String addText = null;
             int offset = 0;
             int cummulativeOffset = 0;
 
@@ -60,7 +58,6 @@ public class CollabEdit {
                 String value = element.getString(1);
                 if (operationCode == 9) {
                     diffs.add(new Command.Diff(DELETE, offset, value));
-                    cummulativeOffset -= value.length();
                 } else if (operationCode == 8) {
                     diffs.add(new Command.Diff(INSERT, offset, value));
                     cummulativeOffset += value.length();

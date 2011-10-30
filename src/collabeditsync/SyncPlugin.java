@@ -6,6 +6,7 @@ import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
 import com.intellij.openapi.util.Computable;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -53,6 +54,17 @@ public class SyncPlugin implements SyncPluginInterface {
                                                     currentText = getDocumentText(test[0]);
                                                     System.out.println("patched: " + currentText.replaceAll("\n", "\\n"));
                                                     System.out.println();
+
+                                                    String digest = DigestUtils.md5Hex(currentText);
+                                                    if (!command.resultHash.equals(digest))
+                                                    try {
+                                                        throw new IllegalArgumentException("Digest does not match!\n" +
+                                                                "Expected: " + command.resultHash + "\n" +
+                                                                "Actual  : " + digest);
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                    }
+
                                                 } catch (IndexOutOfBoundsException e) {
                                                     e.printStackTrace();
                                                     currentText = edit.getFullText();
