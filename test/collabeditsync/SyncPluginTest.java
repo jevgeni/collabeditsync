@@ -18,14 +18,14 @@ public class SyncPluginTest {
 
 //    @Test
 //    public void textModifiedAndEventAboutItIsReceived() throws Exception {
-//        when(syncPlugin.edit.waitForModificationCommand()).thenReturn(Command.class);
+//        when(syncPlugin.edit.waitForModificationCommands()).thenReturn(Command.class);
 //        // ++ hashes
 //        // update, get, skip
 //        syncPlugin.documentUpdated("1");
 //        syncPlugin.applyUpcomingCommand();
 //
 //        verify(command.apply(), never())
-////        Command command = syncPlugin.edit.waitForModificationCommand();
+////        Command command = syncPlugin.edit.waitForModificationCommands();
 ////        no command.apply();
 //    }
 

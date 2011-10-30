@@ -189,10 +189,6 @@ public class CollabEditResourceTest {
                 "\"result_hash\":\"d41d8cd98f00b204e9800998ecf8427e\"," +
                 "\"ops\":[[9,\"1234567\"]]}",
                 pairs.get(0).getValue());
-//
-//                [Diff(DELETE,"aaaabxx a¶a")]
-//Sending out: {"cuid":746810,"parent_hash":"d9863b152132c1e0ed6311b0b99ffb83","result_hash":"d41d8cd98f00b204e9800998ecf8427e","ops":[[9,"aaaabxx a\na"],[7,11]]}
-//collabeditsync.UnsuccessfulResponseException: HTTP/1.1 500 Internal Server Error
     }
 
     private List<NameValuePair> captureExecutedHttpPostEntityPairs(HttpClient client) throws IOException {
@@ -210,10 +206,19 @@ public class CollabEditResourceTest {
     }
 
 
-    // resync on net.sf.json.JSONException: Invalid JSON String
-//----Sleeping...	at net.sf.json.JSONSerializer.toJSON(JSONSerializer.java:143)
-//	at net.sf.json.JSONSerializer.toJSON(JSONSerializer.java:103)
-
-    // TODO: full sync
-    //  document.startGuardedBlockChecking(); ?
+//
+//Received: {"op":{"ops":[[9,"W"],[7,368]],"cuid":746834,"parent_hash":"0c25412ffcbe0ae1fe3628cf12482a1e","result_hash":"f7e8eae4005bbbab39d1b5e9d9113958"}}
+//[Diff(EQUAL,"p"), Diff(DELETE,"s"), Diff(EQUAL,"dublic class Test {¶    public static void main(String[] args) {¶        blah();¶    }¶¶    private static void blah() {¶        goDeeper();¶    }¶¶    private static void goDeeper() {¶        andDeeper();¶    }¶¶    private static void andDeeper() {¶        andDeeperd();¶    }¶¶    private static void andDeeperd() {¶        System.out.println("hello :P");¶    }¶}")]
+//Sending out: {"cuid":746834,"parent_hash":"46cb84a45debe09b3a860a4a28475ba9","result_hash":"4f8bdf7e2a2aa03a21bd5cf91e7a94ab","ops":[[7,1],[9,"s"],[7,366]]}
+//collabeditsync.UnsuccessfulResponseException: HTTP/1.1 500 Internal Server Error
+//full sync
+//	at collabeditsync.CollabEditResource.postTo(CollabEditResource.java:99)
+//	at collabeditsync.CollabEditResource.sendUpdate(CollabEditResource.java:166)
+//	at collabeditsync.CollabEdit.tryPartialUpdate(CollabEdit.java:117)
+//	at collabeditsync.CollabEdit.diffUpdate(CollabEdit.java:89)
+//	at collabeditsync.CollabEdit.update(CollabEdit.java:125)
+//	at collabeditsync.SyncPlugin$2$2.run(SyncPlugin.java:110)
+//	at com.intellij.openapi.application.impl.ApplicationImpl.runReadAction(ApplicationImpl.java:790)
+//	at collabeditsync.SyncPlugin$2.run(SyncPlugin.java:101)
+//	at java.lang.Thread.run(Thread.java:680)
 }

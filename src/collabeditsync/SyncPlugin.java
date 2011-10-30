@@ -6,9 +6,7 @@ import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
 import com.intellij.openapi.util.Computable;
-import org.apache.commons.codec.digest.DigestUtils;
 
-import java.io.IOException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -50,8 +48,11 @@ public class SyncPlugin implements SyncPluginInterface {
                                         public void run() {
                                             synchronized (lock) {
                                                 try {
+                                                    System.out.println("current: " + currentText.replaceAll("\n", "\\n"));
                                                     command.apply(test[0]);
                                                     currentText = getDocumentText(test[0]);
+                                                    System.out.println("patched: " + currentText.replaceAll("\n", "\\n"));
+                                                    System.out.println();
                                                 } catch (IndexOutOfBoundsException e) {
                                                     e.printStackTrace();
                                                     currentText = edit.getFullText();
@@ -101,9 +102,9 @@ public class SyncPlugin implements SyncPluginInterface {
 
                                 String newText = getDocumentText(document);
                                 synchronized (lock) {
-                                    System.out.println(currentText);
-                                    System.out.println(newText);
-                                    System.out.println();
+//                                    System.out.println(currentText);
+//                                    System.out.println(newText);
+//                                    System.out.println();
                                     edit.update(currentText, newText);
                                     currentText = newText;
                                 }

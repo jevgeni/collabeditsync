@@ -4,8 +4,11 @@ import name.fraser.neil.plaintext.diff_match_patch;
 import net.sf.json.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
+import static collabeditsync.Command.Operation.*;
 import static name.fraser.neil.plaintext.diff_match_patch.*;
 
 public class CollabEdit {
@@ -23,13 +26,13 @@ public class CollabEdit {
     public Command waitForExternalModificationCommand() {
         Command command;
         do {
-            command = waitForModificationCommand();
+            command = waitForModificationCommands();
         } while (isMyOwnCommand(command));
 
         return command;
     }
 
-    Command waitForModificationCommand() {
+    Command waitForModificationCommands() {
         try {
             JSONObject response;
             do {
@@ -59,9 +62,10 @@ public class CollabEdit {
                 }
             }
 
-            Command.Delete delete = deleteText != null ? new Command.Delete(startOffset, deleteText) : null;
-            Command.Insert insert = addText != null ? new Command.Insert(startOffset, addText) : null;
-            return new Command(cuid, parentHash, resultHash, delete, insert);
+            List<Command.Diff> diffs = new ArrayList<Command.Diff>();
+            if (deleteText != null) diffs.add(new Command.Diff(DELETE, startOffset, deleteText));
+            if (addText != null) diffs.add(new Command.Diff(INSERT, startOffset, addText));
+            return new Command(cuid, parentHash, resultHash, diffs);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (UnsuccessfulResponseException e) {
@@ -131,7 +135,7 @@ public class CollabEdit {
         }
     }
 
-    private void fullUpdate(String newText) {
+    void fullUpdate(String newText) {
         System.out.println("full sync");
         try {
             resource.sendUpdate(getFullText(), newText);

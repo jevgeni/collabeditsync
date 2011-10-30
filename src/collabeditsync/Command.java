@@ -2,39 +2,32 @@ package collabeditsync;
 
 import com.intellij.openapi.editor.Document;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Command {
-    public static class Delete {
+    public enum Operation {INSERT, DELETE}
+
+    public static class Diff {
+        public final Operation operation;
         public final int startOffset;
+        public final String text;
         public final int endOffset;
 
-        public Delete(int startOffset, String deleteText) {
+        public Diff(Operation operation,  int startOffset, String text) {
+            this.operation = operation;
             this.startOffset = startOffset;
-            this.endOffset = startOffset + deleteText.length();
-        }
-
-        @Override
-        public String toString() {
-            return "Delete{" +
-                    "startOffset=" + startOffset +
-                    ", endOffset=" + endOffset +
-                    '}';
-        }
-    }
-
-    public static class Insert {
-        public final int offset;
-        public final String text;
-
-        public Insert(int offset, String text) {
-            this.offset = offset;
             this.text = text;
+            this.endOffset = startOffset + text.length();
         }
 
         @Override
         public String toString() {
-            return "Insert{" +
-                    "offset=" + offset +
+            return "Diff{" +
+                    "operation=" + operation +
+                    ", startOffset=" + startOffset +
                     ", text='" + text + '\'' +
+                    ", endOffset=" + endOffset +
                     '}';
         }
     }
@@ -42,22 +35,28 @@ public class Command {
     public final Integer cuid;
     public final String parentHash;
     public final String resultHash;
-    public final Delete delete;
-    public final Insert insert;
+    public final List<Diff> diffs;
 
-    public Command(Integer cuid, String parentHash, String resultHash, Delete delete, Insert insert) {
+    public Command(Integer cuid, String parentHash, String resultHash, List<Diff> diffs) {
         this.cuid = cuid;
         this.parentHash = parentHash;
         this.resultHash = resultHash;
-        this.delete = delete;
-        this.insert = insert;
+        this.diffs = diffs;
     }
 
 
     public void apply(Document document) {
         System.out.println(this);
-        if (delete != null) document.deleteString(delete.startOffset, delete.endOffset);
-        if (insert != null) document.insertString(insert.offset, insert.text);
+        for (Diff diff : diffs) {
+            switch (diff.operation) {
+                case DELETE:
+                    document.deleteString(diff.startOffset, diff.endOffset);
+                    break;
+                case INSERT:
+                    document.insertString(diff.startOffset, diff.text);
+                    break;
+            }
+        }
     }
 
     @Override
@@ -66,8 +65,7 @@ public class Command {
                 "cuid=" + cuid +
                 ", parentHash='" + parentHash + '\'' +
                 ", resultHash='" + resultHash + '\'' +
-                ", delete=" + delete +
-                ", insert=" + insert +
+                ", diffs=" + diffs +
                 '}';
     }
 }
