@@ -124,22 +124,32 @@ public class CollabEdit {
         try {
             diffUpdate(oldText, newText);
         } catch (UnsuccessfulResponseException e) {
-            System.out.println("full sync needed");
-            try {
-                resource.sendUpdate(getFullText(), newText);
-            } catch (Exception e1) {
-                System.err.println("Cannot recover...");
-                e1.printStackTrace();
-            }
+            e.printStackTrace();
+            fullUpdate(newText);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public String getFullText() throws IOException, UnsuccessfulResponseException {
-        String oldText;JSONObject response = resource.waitForUpdate(true);
-        oldText = response.getString("full_text");
-        return oldText;
+    private void fullUpdate(String newText) {
+        System.out.println("full sync");
+        try {
+            resource.sendUpdate(getFullText(), newText);
+        } catch (Exception e1) {
+            System.err.println("Cannot perform full sync :(");
+            e1.printStackTrace();
+        }
+    }
+
+    public String getFullText() {
+        try {
+            return resource.waitForUpdate(true).getString("full_text");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsuccessfulResponseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public boolean isMyOwnCommand(Command command) {

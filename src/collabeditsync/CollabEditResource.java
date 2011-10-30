@@ -143,16 +143,16 @@ public class CollabEditResource {
         System.out.println("Json: " + json);
     }
 
-    public void sendUpdate(int myOffset, CharSequence beforeText, CharSequence afterText, CharSequence newFullText) throws IOException, UnsuccessfulResponseException {
+    public void sendUpdate(int myOffset, CharSequence deletedText, CharSequence addedText, CharSequence newFullText) throws IOException, UnsuccessfulResponseException {
         List<JSONArray> ops = new ArrayList<JSONArray>();
 
         if (myOffset > 0) ops.add(indexElement(myOffset));
-        if (beforeText.length() > 0) ops.add(deleteElement(beforeText));
-        if (afterText.length() > 0) ops.add(insertElement(afterText));
+        if (deletedText.length() > 0) ops.add(deleteElement(deletedText));
+        if (addedText.length() > 0) ops.add(insertElement(addedText));
 
-        String oldFullText = getOldText(myOffset, beforeText, afterText, newFullText);
+        String oldFullText = getOldText(myOffset, deletedText, addedText, newFullText);
 
-        int indexFromRight = oldFullText.length() - myOffset;
+        int indexFromRight = oldFullText.length() - deletedText.length() - myOffset;
         if (indexFromRight > 0) ops.add(indexElement(indexFromRight));
 
         JSONObject object = new JSONObject()

@@ -37,6 +37,7 @@ public class SyncPlugin implements SyncPluginInterface {
         final Document[] test = new Document[1];
         new Thread(new Runnable() {
 
+            // TODO: improve me!
             public void run() {
                 while(true) {
                     if(test[0] != null) {
@@ -52,14 +53,9 @@ public class SyncPlugin implements SyncPluginInterface {
                                                     command.apply(test[0]);
                                                     currentText = getDocumentText(test[0]);
                                                 } catch (IndexOutOfBoundsException e) {
-                                                    try {
-                                                        currentText = edit.getFullText();
-                                                        test[0].setText(currentText);
-                                                    } catch (IOException e1) {
-                                                        e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                                                    } catch (UnsuccessfulResponseException e1) {
-                                                        e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                                                    }
+                                                    e.printStackTrace();
+                                                    currentText = edit.getFullText();
+                                                    test[0].setText(currentText);
                                                 }
                                             }
                                         }
@@ -130,10 +126,28 @@ public class SyncPlugin implements SyncPluginInterface {
             public void beforeDocumentChange(DocumentEvent documentEvent) {
             }
 
-            public void documentChanged(DocumentEvent documentEvent) {
+            public void documentChanged(final DocumentEvent documentEvent) {
                if (test[0] == null) {
-                   test[0] = documentEvent.getDocument();
-                   System.out.println("Detected document: " + test[0]);
+
+                   ApplicationManager.getApplication().invokeLater(new Runnable() {
+                       public void run() {
+                           ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                               public void run() {
+                                   synchronized (lock) {
+                                       Document document = documentEvent.getDocument();
+                                       document.setText(edit.getFullText());
+                                       test[0] = document;
+                                       System.out.println("Detected document: " + test[0]);
+                                   }
+                               }
+                           });
+                       }
+                   });
+
+
+
+
+
                }
             }
         });

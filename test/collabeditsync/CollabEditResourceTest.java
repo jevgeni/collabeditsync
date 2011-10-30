@@ -112,7 +112,7 @@ public class CollabEditResourceTest {
         assertEquals("{\"cuid\":77777," +
                 "\"parent_hash\":\"e807f1fcf82d132f9bb018ca6738a19f\"," +
                 "\"result_hash\":\"b77b8951c1ea66861604bb79fa6664d4\"," +
-                "\"ops\":[[7,5],[9,\"67\"],[8,\"xyz\"],[7,5]]}",
+                "\"ops\":[[7,5],[9,\"67\"],[8,\"xyz\"],[7,3]]}",
                 pairs.get(0).getValue());
     }
 
@@ -142,7 +142,7 @@ public class CollabEditResourceTest {
         assertEquals("{\"cuid\":77777," +
                 "\"parent_hash\":\"e807f1fcf82d132f9bb018ca6738a19f\"," +
                 "\"result_hash\":\"9d60d0f795d6aa33b267b5f39252006d\"," +
-                "\"ops\":[[7,5],[9,\"67\"],[7,5]]}",
+                "\"ops\":[[7,5],[9,\"67\"],[7,3]]}",
                 pairs.get(0).getValue());
     }
 
@@ -174,6 +174,25 @@ public class CollabEditResourceTest {
                 "\"result_hash\":\"bfd81ee3ed27ad31c95ca75e21365973\"," +
                 "\"ops\":[[7,10],[8,\"1\"]]}",
                 pairs.get(0).getValue());
+    }
+
+    @Test
+    public void doNotSendRightOffsetIfFullDelete() throws Exception {
+        mockResponse("{\"OK\":\"OK\"}");
+        resource.sendUpdate(0, "1234567", "", "");
+
+        List<NameValuePair> pairs = captureExecutedHttpPostEntityPairs(resource.client);
+        assertEquals("op", pairs.get(0).getName());
+
+        assertEquals("{\"cuid\":77777," +
+                "\"parent_hash\":\"fcea920f7412b5da7be0cf42b8c93759\"," +
+                "\"result_hash\":\"d41d8cd98f00b204e9800998ecf8427e\"," +
+                "\"ops\":[[9,\"1234567\"]]}",
+                pairs.get(0).getValue());
+//
+//                [Diff(DELETE,"aaaabxx a¶a")]
+//Sending out: {"cuid":746810,"parent_hash":"d9863b152132c1e0ed6311b0b99ffb83","result_hash":"d41d8cd98f00b204e9800998ecf8427e","ops":[[9,"aaaabxx a\na"],[7,11]]}
+//collabeditsync.UnsuccessfulResponseException: HTTP/1.1 500 Internal Server Error
     }
 
     private List<NameValuePair> captureExecutedHttpPostEntityPairs(HttpClient client) throws IOException {
