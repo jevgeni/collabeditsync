@@ -51,7 +51,12 @@ public class SyncPlugin implements SyncPluginInterface {
                                         public void run() {
                                             synchronized (lock) {
                                                 try {
-                                                    if(edit.isMyOwnCommand(command)) return;
+                                                    if(edit.isMyOwnCommand(command)) {
+                                                        System.out.println("own command detected! skipping");
+                                                        return;
+                                                    } else {
+                                                        System.out.println("NEW COMMAND!");
+                                                    }
                                                     command.apply(test[0]);
                                                     currentText = getDocumentText(test[0]);
                                                     currentTextHash = DigestUtils.md5Hex(currentText);
