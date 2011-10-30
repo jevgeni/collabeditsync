@@ -75,22 +75,19 @@ public class CollabEditTest {
 
 
     @Test
-    @Ignore
     public void multipleDiffs() throws Exception {
-        String before = "asdasdfada\nasdsasaadsdsfasdfassfadsf\nasdsadasdf";
-
-        String data = "{\"op\":{\"ops\":[[7,10],[8,\"sdf\"],[7,15],[8,\"sfa\"],[7,22]],\"cuid\":746859,\"parent_hash\":\"6673e124dbdaf19775d4ee41471ed982\",\"result_hash\":\"dc6eb65a7f3378189d3c6357ff7aee66\"}}";
-
-        String after =  "asdasdfadasdf\nasdsasaadsdsfasfasdfassfadsf\nasdsadasdf";
-
-        mockWaitForUpdate(data);
+        mockWaitForUpdate("{\"op\":{\"ops\":[[7,10],[8,\"sdf\"],[7,15],[8,\"sfa\"],[7,22]],\"cuid\":746859,\"parent_hash\":\"6673e124dbdaf19775d4ee41471ed982\",\"result_hash\":\"dc6eb65a7f3378189d3c6357ff7aee66\"}}");
 
         Command command = collabEdit.waitForModificationCommands();
         System.out.println(command);
 
-        assertEquals(DELETE, command.diffs.get(0).operation);
-        assertEquals(0, command.diffs.get(0).startOffset);
-        assertEquals(5, command.diffs.get(0).endOffset);
+        assertEquals(INSERT, command.diffs.get(0).operation);
+        assertEquals(10, command.diffs.get(0).startOffset);
+        assertEquals("sdf", command.diffs.get(0).text);
+
+        assertEquals(INSERT, command.diffs.get(1).operation);
+        assertEquals(10 + 3 + 15, command.diffs.get(1).startOffset);
+        assertEquals("sfa", command.diffs.get(1).text);
     }
 
     private void mockWaitForUpdate(String data) throws IOException, UnsuccessfulResponseException {

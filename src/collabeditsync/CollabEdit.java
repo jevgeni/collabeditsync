@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static collabeditsync.Command.Operation.*;
+import static collabeditsync.Command.Operation.DELETE;
 import static name.fraser.neil.plaintext.diff_match_patch.*;
 
 public class CollabEdit {
@@ -47,24 +48,29 @@ public class CollabEdit {
             String resultHash = op.getString("result_hash");
             JSONArray ops = op.getJSONArray("ops");
 
-            String deleteText = null;
-            String addText = null;
-            int startOffset = 0;
+//            String deleteText = null;
+//            String addText = null;
+            int offset = 0;
+            int cummulativeOffset = 0;
 
+            List<Command.Diff> diffs = new ArrayList<Command.Diff>();
             for (int i = 0; i < ops.size(); i++) {
                 JSONArray element = ops.getJSONArray(i);
-                if (element.getInt(0) == 9) {
-                    deleteText = element.getString(1);
-                } else if (element.getInt(0) == 8) {
-                    addText = element.getString(1);
-                } else if (element.getInt(0) == 7) {
-                    if (i == 0) startOffset = element.getInt(1);
+                int operationCode = element.getInt(0);
+                String value = element.getString(1);
+                if (operationCode == 9) {
+                    diffs.add(new Command.Diff(DELETE, offset, value));
+                    cummulativeOffset -= value.length();
+                } else if (operationCode == 8) {
+                    diffs.add(new Command.Diff(INSERT, offset, value));
+                    cummulativeOffset += value.length();
+                } else if (operationCode == 7) {
+                    offset += element.getInt(1);
+                    offset += cummulativeOffset;
+                    cummulativeOffset = 0;
                 }
             }
 
-            List<Command.Diff> diffs = new ArrayList<Command.Diff>();
-            if (deleteText != null) diffs.add(new Command.Diff(DELETE, startOffset, deleteText));
-            if (addText != null) diffs.add(new Command.Diff(INSERT, startOffset, addText));
             return new Command(cuid, parentHash, resultHash, diffs);
         } catch (IOException e) {
             e.printStackTrace();
