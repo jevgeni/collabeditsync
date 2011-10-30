@@ -32,8 +32,7 @@ public class SyncPlugin implements SyncPluginInterface {
     }
 
     public void initComponent() {
-        System.out.println("init!");
-        edit.init(); // TODO: make it implicit
+        edit.init(); // TODO: make it implicit ?
 
         final Document[] test = new Document[1];
         new Thread(new Runnable() {
@@ -82,7 +81,6 @@ public class SyncPlugin implements SyncPluginInterface {
 
 
         new Thread(new Runnable() {
-
             public void run() {
                 while(true) {
                     if(test[0] != null) {
