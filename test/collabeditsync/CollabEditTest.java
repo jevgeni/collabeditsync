@@ -1,15 +1,13 @@
 package collabeditsync;
 
 import com.intellij.openapi.editor.Document;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
 
 import static collabeditsync.Command.Operation.DELETE;
 import static collabeditsync.Command.Operation.INSERT;
@@ -108,7 +106,8 @@ public class CollabEditTest {
     }
 
     private void mockWaitForUpdate(String data) throws IOException, UnsuccessfulResponseException {
-        JSONObject jsonData = (JSONObject) JSONSerializer.toJSON(data);
+        JSONObject jsonData = (JSONObject) JSONValue.parse(data);
+        jsonData.put("op", ((JSONObject) jsonData.get("op")).toJSONString()); // simulate server response
         when(collabEdit.resource.waitForUpdate(false)).thenReturn(jsonData);
     }
 
@@ -116,8 +115,9 @@ public class CollabEditTest {
     public void waitForDataUntilOpsReceived() throws Exception {
         String firstData = "{\"lang\":\"none\",\"messages\":[{\"message_text\":\"renamed document to dd\",\"nickname\":\"Jevgeni\",\"type\":5}],\"name\":\"dd\",\"user_list\":[\"bob\"]}";
         String secondData = "{\"op\":{\"ops\":[[9,\"zxxxx\"],[7,20]],\"cuid\":745713,\"parent_hash\":\"6673e124dbdaf19775d4ee41471ed982\",\"result_hash\":\"dc6eb65a7f3378189d3c6357ff7aee66\"}}";
-        JSONObject firstJsonData = (JSONObject) JSONSerializer.toJSON(firstData);
-        JSONObject secondJsonData = (JSONObject) JSONSerializer.toJSON(secondData);
+        JSONObject firstJsonData = (JSONObject) JSONValue.parse(firstData);
+        JSONObject secondJsonData = (JSONObject) JSONValue.parse(secondData);
+        secondJsonData.put("op", ((JSONObject) secondJsonData.get("op")).toJSONString()); // simulate server response
         when(collabEdit.resource.waitForUpdate(false)).thenReturn(firstJsonData).thenReturn(secondJsonData);
 
         Command command = collabEdit.waitForModificationCommands();
@@ -148,7 +148,7 @@ public class CollabEditTest {
                  .when(collabEdit).diffUpdate(anyString(), anyString());
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.accumulate("full_text", "xxx");
+        jsonObject.put("full_text", "xxx");
         when(collabEdit.resource.waitForUpdate(true)).thenReturn(jsonObject);
 
         collabEdit.update("old-text", "new-text");
@@ -223,7 +223,7 @@ public class CollabEditTest {
         verifyNoMoreInteractions(collabEdit.resource);
     }
 
-        @Test
+    @Test
     public void insertDeleteDiffMultipleTimes() throws Exception {
         collabEdit.diffUpdate("ABCDEF", "AyCDxxF");
         verify(collabEdit.resource).sendUpdate(1, "B", "y", "AyCDEF");

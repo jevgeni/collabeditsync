@@ -107,7 +107,7 @@ public class SyncPlugin implements SyncPluginInterface {
                         });
 
 
-                        sleep();
+                        sleep(100);
                         ApplicationManager.getApplication().runReadAction(new Runnable() {
 
                             public void run() {
@@ -176,9 +176,9 @@ public class SyncPlugin implements SyncPluginInterface {
         return newText;
     }
 
-    private void sleep() {
+    private void sleep(long ms) {
         try {
-            Thread.sleep(500);
+            Thread.sleep(ms);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -32,12 +32,12 @@ public class Command {
         }
     }
 
-    public final Integer cuid;
+    public final long cuid;
     public final String parentHash;
     public final String resultHash;
     public final List<Diff> diffs;
 
-    public Command(Integer cuid, String parentHash, String resultHash, List<Diff> diffs) {
+    public Command(long cuid, String parentHash, String resultHash, List<Diff> diffs) {
         this.cuid = cuid;
         this.parentHash = parentHash;
         this.resultHash = resultHash;

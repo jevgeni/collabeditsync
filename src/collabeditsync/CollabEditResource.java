@@ -1,11 +1,8 @@
 package collabeditsync;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.vfs2.impl.DefaultFileMonitor;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
@@ -24,21 +21,21 @@ import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.util.Arrays.asList;
-
 public class CollabEditResource {
     HttpClient client;
     HttpContext context = new BasicHttpContext();
-    Integer cuid;
+    long cuid = -1;
     private final String code;
 
     public CollabEditResource(String code) {
@@ -64,11 +61,11 @@ public class CollabEditResource {
         System.out.println("Received cuid: " + cuid);
     }
 
-    Integer extractCuid(String body) {
+    Long extractCuid(String body) {
         Pattern pattern = Pattern.compile("var cuid = (\\d*);");
         Matcher matcher = pattern.matcher(body);
         matcher.find();
-        return matcher.groupCount() > 0 ? Integer.parseInt(matcher.group(1)) : null;
+        return matcher.groupCount() > 0 ? Long.parseLong(matcher.group(1)) : null;
     }
 
     public void changeNick(String nick) {
@@ -116,12 +113,11 @@ public class CollabEditResource {
     }
 
     public JSONObject waitForUpdate(Boolean resync) throws IOException, UnsuccessfulResponseException {
-        if (cuid == null) throw new IllegalStateException("Cannot query as I don't have CUID yet!");
+        if (cuid == -1) throw new IllegalStateException("Cannot query as I don't have CUID yet!");
 
         final String url = "http://collabedit.com/ot/wait";
-        String rest = postTo(client, url, withParams("guid", code, "cuid", cuid.toString(), "resync", resync.toString().toLowerCase()));
-
-        return (JSONObject) JSONSerializer.toJSON(rest);
+        String rest = postTo(client, url, withParams("guid", code, "cuid", Long.toString(cuid), "resync", resync.toString().toLowerCase()));
+        return (JSONObject) JSONValue.parse(rest);
     }
 
     public void sendUpdate(String oldText, String newText) throws IOException, UnsuccessfulResponseException {
@@ -129,17 +125,17 @@ public class CollabEditResource {
         if (!oldText.isEmpty()) ops.add(deleteElement(oldText));
         if (!newText.isEmpty()) ops.add(insertElement(newText));
 
-        JSONObject object = new JSONObject()
-                .element("cuid", cuid)
-                .element("parent_hash", DigestUtils.md5Hex(oldText))
-                .element("result_hash", DigestUtils.md5Hex(newText))
-                .element("ops", ops);
+        JSONObject object = new JSONObject();
+        object.put("cuid", cuid);
+        object.put("parent_hash", DigestUtils.md5Hex(oldText));
+        object.put("result_hash", DigestUtils.md5Hex(newText));
+        object.put("ops", ops);
 
         System.out.println("Sending out: " + object);
 
         String rest = postTo(client, "http://collabedit.com/ot/post", withParams("op", object.toString()));
         System.out.println("Response " + rest);
-        JSONObject json = (JSONObject) JSONSerializer.toJSON(rest);
+        JSONObject json = (JSONObject) JSONValue.parse(rest);
         System.out.println("Json: " + json);
     }
 
@@ -155,17 +151,17 @@ public class CollabEditResource {
         int indexFromRight = oldFullText.length() - deletedText.length() - myOffset;
         if (indexFromRight > 0) ops.add(indexElement(indexFromRight));
 
-        JSONObject object = new JSONObject()
-                .element("cuid", cuid)
-                .element("parent_hash", DigestUtils.md5Hex(oldFullText.toString()))
-                .element("result_hash", DigestUtils.md5Hex(newFullText.toString()))
-                .element("ops", ops);
+        JSONObject object = new JSONObject();
+        object.put("cuid", cuid);
+        object.put("parent_hash", DigestUtils.md5Hex(oldFullText.toString()));
+        object.put("result_hash", DigestUtils.md5Hex(newFullText.toString()));
+        object.put("ops", ops);
 
         System.out.println("Sending out: " + object);
 
         String rest = postTo(client, "http://collabedit.com/ot/post", withParams("op", object.toString()));
 
-        JSONObject json = (JSONObject) JSONSerializer.toJSON(rest);
+        JSONObject json = (JSONObject) JSONValue.parse(rest);
         System.out.println("Response on update: " + json);
     }
 

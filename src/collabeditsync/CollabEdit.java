@@ -1,7 +1,9 @@
 package collabeditsync;
 
 import name.fraser.neil.plaintext.diff_match_patch;
-import net.sf.json.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,30 +41,33 @@ public class CollabEdit {
             do {
                 response = resource.waitForUpdate(false);
                 System.out.println("Received: " + response);
-            } while (!response.has("op"));
+            } while (!response.containsKey("op"));
 
-            // TODO: cover with tests cuid/parent_Hash_result_Hash
-            JSONObject op = response.getJSONObject("op");
-            Integer cuid = op.getInt("cuid");
-            String parentHash = op.getString("parent_hash");
-            String resultHash = op.getString("result_hash");
-            JSONArray ops = op.getJSONArray("ops");
+
+            String operation = (String) response.get("op");
+            JSONObject op = (JSONObject) JSONValue.parse(operation);
+
+            Long cuid = (Long) op.get("cuid");
+            String parentHash = (String) op.get("parent_hash");
+            String resultHash = (String) op.get("result_hash");
+            JSONArray ops = (JSONArray) op.get("ops");
 
             int offset = 0;
             int cummulativeOffset = 0;
 
             List<Command.Diff> diffs = new ArrayList<Command.Diff>();
             for (int i = 0; i < ops.size(); i++) {
-                JSONArray element = ops.getJSONArray(i);
-                int operationCode = element.getInt(0);
-                String value = element.getString(1);
+                JSONArray element = (JSONArray) ops.get(i);
+                long operationCode = (Long) element.get(0);
                 if (operationCode == 9) {
+                    String value = (String) element.get(1);
                     diffs.add(new Command.Diff(DELETE, offset, value));
                 } else if (operationCode == 8) {
+                    String value = (String) element.get(1);
                     diffs.add(new Command.Diff(INSERT, offset, value));
                     cummulativeOffset += value.length();
                 } else if (operationCode == 7) {
-                    offset += element.getInt(1);
+                    offset += (Long)element.get(1);
                     offset += cummulativeOffset;
                     cummulativeOffset = 0;
                 }
@@ -150,7 +155,7 @@ public class CollabEdit {
 
     public String getFullText() {
         try {
-            return resource.waitForUpdate(true).getString("full_text");
+            return (String) resource.waitForUpdate(true).get("full_text");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (UnsuccessfulResponseException e) {
@@ -160,14 +165,14 @@ public class CollabEdit {
     }
 
     public boolean isMyOwnCommand(Command command) {
-        return command.cuid.equals(getCuid());
+        return command.cuid == getCuid();
     }
 
-    private Integer getCuid() {
+    private Long getCuid() {
         return resource.cuid;
     }
 
-    public void setCuid(int cuid) {
+    public void setCuid(long cuid) {
         resource.cuid = cuid;
     }
 }

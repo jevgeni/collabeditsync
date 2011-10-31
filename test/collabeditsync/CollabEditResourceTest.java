@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -51,8 +52,8 @@ public class CollabEditResourceTest {
                "</body>\n" +
                "</html>";
 
-        Integer cuid = resource.extractCuid(responsePart);
-        assertEquals(new Integer(744546), cuid);
+        Long cuid = resource.extractCuid(responsePart);
+        assertEquals(new Long(744546), cuid);
     }
 
 
@@ -188,6 +189,27 @@ public class CollabEditResourceTest {
                 "\"parent_hash\":\"fcea920f7412b5da7be0cf42b8c93759\"," +
                 "\"result_hash\":\"d41d8cd98f00b204e9800998ecf8427e\"," +
                 "\"ops\":[[9,\"1234567\"]]}",
+                pairs.get(0).getValue());
+    }
+
+
+    @Test
+    public void sendBrackets() throws Exception {
+        org.json.simple.JSONArray a = new org.json.simple.JSONArray();
+        a.add("{}");
+        System.out.println(a);
+//        resource.
+
+        mockResponse("{\"OK\":\"OK\"}");
+        resource.sendUpdate(19, "", "{}", "public class Hello {}");
+
+        List<NameValuePair> pairs = captureExecutedHttpPostEntityPairs(resource.client);
+        assertEquals("op", pairs.get(0).getName());
+
+        assertEquals("{\"cuid\":77777," +
+                "\"parent_hash\":\"715c9061c00b9e1a558ffca668faaf35\"," +
+                "\"result_hash\":\"202bb7ec10492cd3192ed06be9312228\"," +
+                "\"ops\":[[7,19],[8,\"{}\"]]}",
                 pairs.get(0).getValue());
     }
 
