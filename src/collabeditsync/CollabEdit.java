@@ -30,7 +30,7 @@ public class CollabEdit {
         Command command;
         do {
             command = waitForModificationCommands();
-        } while (isMyOwnCommand(command));
+        } while (command == null || isMyOwnCommand(command));
 
         return command;
     }
