@@ -2,7 +2,7 @@ package collabeditsync;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
@@ -12,6 +12,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
@@ -45,6 +46,13 @@ public class CollabEditResource {
 
         ClientConnectionManager cm = new ThreadSafeClientConnManager(schemeRegistry);
         client = new DefaultHttpClient(cm);
+        String proxyHost = System.getProperty("http.proxyHost");
+        String proxyPort = System.getProperty("http.proxyPort");
+        if (proxyHost != null && proxyPort != null) {
+            HttpHost proxy = new HttpHost(proxyHost, Integer.parseInt(proxyPort), "http");
+            System.out.println("Detected proxy: " + proxy);
+            client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+        }
 
 
         this.code = code;
@@ -54,6 +62,7 @@ public class CollabEditResource {
 
     public void login() throws IOException {
         HttpGet get = new HttpGet("http://collabedit.com/" + code);
+        client.execute(new HttpGet("http://www.google.com"));
         HttpResponse response = client.execute(get, context);
         String body = IOUtils.toString(response.getEntity().getContent());
         response.getEntity().getContent().close();
